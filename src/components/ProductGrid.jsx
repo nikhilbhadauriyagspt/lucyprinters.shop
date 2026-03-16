@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, Check } from "lucide-react";
+import { Heart, Check, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
@@ -26,86 +26,111 @@ export default function ProductGrid({ products = [] }) {
   };
 
   return (
-    <section className="px-6 md:px-10 py-24 bg-white font-sans relative">
-      <div className="max-w-[1650px] mx-auto">
+    <section className="bg-white py-24 px-4 md:px-10 overflow-hidden font-sans">
+      <div className="max-w-[1920px] mx-auto">
         
         {/* --- SECTION HEADER --- */}
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-black uppercase tracking-[0.15em]">
-            New Arrivals
-          </h2>
-          <div className="w-20 h-1 bg-[#0047ab] mx-auto mt-4" />
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-zinc-100 pb-10">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200">
+               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Fresh Inventory</span>
+            </div>
+            <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 leading-none italic tracking-tighter">
+              New <span className="text-[#0ea5e9]">Arrivals</span>
+            </h2>
+          </div>
+          
+          <Link 
+            to="/shop" 
+            className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors"
+          >
+            Explore Complete Catalog <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
 
         {/* --- PRODUCT GRID --- */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 md:gap-6">
-          {products.slice(0, 40).map((p, idx) => (
-            <div 
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+          {products.slice(0, 30).map((p, idx) => (
+            <motion.div 
               key={p.id}
-              className="relative bg-white border border-gray-100 p-4 transition-all duration-500 flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-1.5 hover:border-[#0047ab]/30 h-full"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: (idx % 6) * 0.05 }}
+              className={cn(
+                "bg-white border border-zinc-200 transition-all duration-500 relative flex flex-col h-full group/card",
+                "hover:border-[#0ea5e9]/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]"
+              )}
             >
               {/* Image Area */}
-              <div className="relative aspect-square w-full flex items-center justify-center mb-4 px-2 overflow-hidden">
+              <div className="aspect-square w-full overflow-hidden bg-white flex items-center justify-center p-8 relative">
                 <img 
                   src={getImagePath(p.images)} 
-                  className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110" 
                   alt={p.name} 
+                  className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-700 group-hover/card:scale-110 relative z-10"
                 />
               </div>
 
-              {/* Metadata */}
-              <div className="space-y-2 mb-4">
-                <Link to={`/product/${p.slug}`} className="block">
-                  <h3 className="font-bold text-gray-800 text-[13px] leading-tight line-clamp-2 uppercase tracking-tight group-hover:text-[#0047ab] transition-colors h-[32px]">
-                    {p.name}
-                  </h3>
-                </Link>
-                
-                <div className="flex items-baseline gap-2">
-                  <span className="text-[15px] font-black text-gray-900">${p.price}</span>
+              {/* Info Area */}
+              <div className="p-6 bg-white border-t border-zinc-50 flex flex-col flex-1 relative">
+                <div className="space-y-2 mb-6 flex-1">
+                  <Link to={`/product/${p.slug}`}>
+                    <h3 className="text-[13px] font-bold text-zinc-800 line-clamp-1 group-hover/card:text-[#0ea5e9] transition-colors duration-300">
+                      {p.name}
+                    </h3>
+                  </Link>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-base font-black text-zinc-900">${p.price}</span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Bottom Action Area */}
-              <div className="mt-auto grid grid-cols-3 gap-1.5 relative z-30">
-                <button 
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(p); }}
-                  disabled={addedItems[p.id]}
-                  className={cn(
-                    "col-span-2 h-9 border text-[9px] font-black uppercase tracking-widest transition-all duration-300 active:scale-90",
-                    addedItems[p.id] 
-                      ? "bg-emerald-500 border-emerald-500 text-white" 
-                      : "bg-white border-gray-200 text-gray-800 hover:bg-[#0047ab] hover:text-white hover:border-[#0047ab]"
-                  )}
-                >
-                  {addedItems[p.id] ? <Check size={14} className="mx-auto" /> : "Add To Cart"}
-                </button>
-                
-                <button 
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
-                  className={cn(
-                    "h-9 border border-gray-200 flex items-center justify-center transition-all duration-300 active:scale-90",
-                    isInWishlist(p.id) ? "text-red-500 border-red-100 bg-red-50" : "text-gray-400 hover:bg-red-50 hover:text-red-500 hover:border-red-100"
-                  )}
-                >
-                  <Heart size={14} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
-                </button>
-              </div>
+                {/* Action Buttons */}
+                <div className="flex items-center gap-2 relative z-20 mt-auto">
+                  <button 
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(p); }}
+                    disabled={addedItems[p.id]}
+                    className={cn(
+                      "flex-1 h-10 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 flex items-center justify-center gap-2",
+                      addedItems[p.id] 
+                        ? "bg-emerald-500 text-white shadow-md" 
+                        : "bg-zinc-900 text-white hover:bg-[#0ea5e9] shadow-sm hover:shadow-md"
+                    )}
+                  >
+                    {addedItems[p.id] ? <Check size={14} /> : "Add to Cart"}
+                  </button>
+                  
+                  <button 
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
+                    className={cn(
+                      "h-10 w-10 rounded-xl border flex items-center justify-center transition-all duration-300 active:scale-95 shadow-sm",
+                      isInWishlist(p.id) 
+                        ? "bg-red-50 border-red-100 text-red-500" 
+                        : "bg-white border-zinc-200 text-zinc-400 hover:text-red-500 hover:border-red-100"
+                    )}
+                  >
+                    <Heart size={16} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
+                  </button>
+                </div>
 
-              <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-[80%] z-0" />
-            </div>
+                {/* Simple Bottom Accent Line on Hover */}
+                <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#0ea5e9] transition-all duration-500 group-hover/card:w-full" />
+              </div>
+              
+              <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-[70%] z-0" />
+            </motion.div>
           ))}
         </div>
 
-        {/* View All Button */}
-        <div className="mt-16 text-center">
-          <Link 
-            to="/shop" 
-            className="inline-flex items-center gap-3 bg-black text-white px-12 py-4 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-[#0047ab] transition-all active:scale-95"
-          >
-            View All Arrivals
-          </Link>
+        {/* --- VIEW ALL FOOTER --- */}
+        <div className="mt-20 pt-10 border-t border-zinc-100 text-center">
+            <Link 
+              to="/shop" 
+              className="inline-flex items-center gap-4 bg-zinc-900 hover:bg-[#0ea5e9] text-white px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 shadow-2xl"
+            >
+              Browse All Products <ArrowRight size={18} />
+            </Link>
         </div>
+
       </div>
     </section>
   );

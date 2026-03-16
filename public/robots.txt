@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://printerbrother.shop/sitemap.xml
+Sitemap: https://dashprintershop.shop/sitemap.xml

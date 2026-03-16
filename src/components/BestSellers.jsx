@@ -1,5 +1,4 @@
-import { motion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Heart, Check, Plus, ArrowLeftRight, ShoppingCart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Heart, Check } from "lucide-react";
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
 import { Link } from "react-router-dom";
@@ -8,6 +7,7 @@ import { useState } from "react";
 import { cn } from "../lib/utils";
 
 import 'swiper/css';
+import 'swiper/css/navigation';
 
 export default function BestSellers({ products = [] }) {
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
@@ -30,106 +30,120 @@ export default function BestSellers({ products = [] }) {
   };
 
   return (
-    <section className="px-6 md:px-10 py-24 bg-[#f9f9f9] font-sans relative overflow-hidden">
-      
-      <div className="max-w-[1650px] mx-auto">
+    <section className="bg-zinc-50/50 py-20 px-4 md:px-10 overflow-hidden font-sans border-y border-zinc-100">
+      <div className="max-w-[1920px] mx-auto relative">
         
         {/* --- SECTION HEADER --- */}
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-black uppercase tracking-[0.15em]">
-            Market Favorites
-          </h2>
-          <div className="w-20 h-1 bg-[#0047ab] mx-auto mt-4" />
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+          <div className="space-y-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 leading-none italic">
+              Market <span className="text-[#0ea5e9]">Favorites</span>
+            </h2>
+          </div>
+          
+          <div className="flex items-center gap-2">
+            <button className="bs-prev h-12 w-12 bg-white flex items-center justify-center border border-zinc-200 hover:bg-[#0ea5e9] hover:text-white hover:border-[#0ea5e9] transition-all duration-300 shadow-sm group">
+              <ChevronLeft size={20} />
+            </button>
+            <button className="bs-next h-12 w-12 bg-white flex items-center justify-center border border-zinc-200 hover:bg-[#0ea5e9] hover:text-white hover:border-[#0ea5e9] transition-all duration-300 shadow-sm group">
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
+        {/* --- CAROUSEL --- */}
         <div className="relative group">
           <Swiper
             modules={[Navigation, Autoplay]}
-            spaceBetween={30}
+            spaceBetween={16}
             slidesPerView={1.2}
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             navigation={{ prevEl: '.bs-prev', nextEl: '.bs-next' }}
             breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-              1280: { slidesPerView: 4 },
+              640: { slidesPerView: 2.5 },
+              1024: { slidesPerView: 3.5 },
+              1280: { slidesPerView: 4.5 },
+              1536: { slidesPerView: 6 },
             }}
-            className="!overflow-visible !pb-4"
+            className="!overflow-visible"
           >
             {products.slice(0, 12).map((p, idx) => (
-                <SwiperSlide key={p.id}>
-                  <div 
-                    className="relative bg-white border border-gray-100 p-6 transition-all duration-500 flex flex-col group hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-2 hover:border-[#0047ab]/30 h-full"
-                  >
-                    {/* Image Area */}
-                    <div className="relative aspect-square w-full flex items-center justify-center mb-8 px-4 overflow-hidden">
-                      <img 
-                        src={getImagePath(p.images)} 
-                        className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110" 
-                        alt={p.name} 
-                      />
-                    </div>
+              <SwiperSlide key={p.id}>
+                <div className={cn(
+                  "bg-white border border-zinc-200 transition-all duration-500 relative flex flex-col h-full group/card",
+                  "hover:border-[#0ea5e9]/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]"
+                )}>
+                  
+                  {/* Image Area */}
+                  <div className="aspect-square w-full overflow-hidden bg-white flex items-center justify-center p-8 relative">
+                    <img 
+                      src={getImagePath(p.images)} 
+                      alt={p.name} 
+                      className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-700 group-hover/card:scale-110 relative z-10"
+                    />
+                  </div>
 
-                    {/* Metadata */}
-                    <div className="space-y-3 mb-8">
-                      <Link to={`/product/${p.slug}`} className="block">
-                        <h3 className="font-bold text-gray-800 text-[14px] leading-tight line-clamp-1 uppercase tracking-tight group-hover:text-[#0047ab] transition-colors">
+                  {/* Info Area */}
+                  <div className="p-6 bg-white border-t border-zinc-50 flex flex-col flex-1 relative">
+                    <div className="space-y-2 mb-6 flex-1">
+                      <Link to={`/product/${p.slug}`}>
+                        <h3 className="text-[13px] font-bold text-zinc-800 line-clamp-1 group-hover/card:text-[#0ea5e9] transition-colors duration-300">
                           {p.name}
                         </h3>
                       </Link>
-                      
-                      <div className="flex items-baseline gap-3">
-                        <span className="text-base font-black text-gray-900">${p.price}</span>
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-sm font-black text-zinc-900">${p.price}</span>
                         {idx % 3 === 0 && (
-                          <span className="text-[12px] font-medium text-gray-400 line-through">
+                          <span className="text-[10px] font-medium text-zinc-400 line-through">
                             ${(parseFloat(p.price) * 1.2).toFixed(2)}
                           </span>
                         )}
                       </div>
                     </div>
 
-                    {/* Bottom Action Area */}
-                    <div className="mt-auto grid grid-cols-3 gap-2 relative z-30">
+                    {/* Action Buttons */}
+                    <div className="flex items-center gap-2 relative z-20 mt-auto">
                       <button 
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(p); }}
                         disabled={addedItems[p.id]}
                         className={cn(
-                          "col-span-2 h-10 border text-[10px] font-black uppercase tracking-widest transition-all duration-300 active:scale-90",
+                          "flex-1 h-11 rounded-xl text-[11px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 flex items-center justify-center gap-2",
                           addedItems[p.id] 
-                            ? "bg-emerald-500 border-emerald-500 text-white" 
-                            : idx === 0 
-                              ? "bg-[#0047ab] border-[#0047ab] text-white hover:bg-black hover:border-black" 
-                              : "bg-white border-gray-200 text-gray-800 hover:bg-[#0047ab] hover:text-white hover:border-[#0047ab]"
+                            ? "bg-emerald-500 text-white shadow-[0_10px_20px_rgba(16,185,129,0.1)]" 
+                            : "bg-zinc-900 text-white hover:bg-[#0ea5e9] shadow-[0_10px_20px_rgba(0,0,0,0.05)] hover:shadow-[0_10px_20px_rgba(14,165,233,0.1)]"
                         )}
                       >
-                        {addedItems[p.id] ? <Check size={16} className="mx-auto" /> : "Add To Cart"}
+                        {addedItems[p.id] ? (
+                          <><Check size={16} /> Added</>
+                        ) : (
+                          <>Add to Cart</>
+                        )}
                       </button>
                       
                       <button 
                         onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
                         className={cn(
-                          "h-10 border border-gray-200 flex items-center justify-center transition-all duration-300 active:scale-90",
-                          isInWishlist(p.id) ? "text-red-500 border-red-100 bg-red-50" : "text-gray-400 hover:bg-red-50 hover:text-red-500 hover:border-red-100"
+                          "h-11 w-11 rounded-xl border flex items-center justify-center transition-all duration-300 active:scale-95 shadow-sm",
+                          isInWishlist(p.id) 
+                            ? "bg-red-50 border-red-100 text-red-500" 
+                            : "bg-white border-zinc-200 text-zinc-400 hover:text-red-500 hover:border-red-100"
                         )}
                       >
-                        <Heart size={16} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
+                        <Heart size={18} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
                       </button>
                     </div>
 
-                    <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-[80%] z-0" />
+                    {/* Simple Bottom Accent Line on Hover */}
+                    <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#0ea5e9] transition-all duration-500 group-hover/card:w-full" />
                   </div>
-                </SwiperSlide>
-              ))}
+                  
+                  <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-[70%] z-0" />
+                </div>
+              </SwiperSlide>
+            ))}
           </Swiper>
-
-          {/* Navigation Arrows */}
-          <button className="bs-prev absolute left-[-20px] top-[45%] -translate-y-1/2 z-20 h-12 w-12 bg-white flex items-center justify-center shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50 transition-all opacity-0 group-hover:opacity-100 disabled:hidden rounded-sm active:scale-90">
-            <ChevronLeft size={20} strokeWidth={2.5} className="text-gray-600" />
-          </button>
-          <button className="bs-next absolute right-[-20px] top-[45%] -translate-y-1/2 z-20 h-12 w-12 bg-white flex items-center justify-center shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50 transition-all opacity-0 group-hover:opacity-100 disabled:hidden rounded-sm active:scale-90">
-            <ChevronRight size={20} strokeWidth={2.5} className="text-gray-600" />
-          </button>
         </div>
+
       </div>
     </section>
   );

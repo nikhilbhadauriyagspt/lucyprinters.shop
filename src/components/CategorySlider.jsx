@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Heart, Check, ChevronLeft, ChevronRight } from "lucide-react";
+import { Heart, Check, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
@@ -33,52 +33,49 @@ export default function CategorySlider({ title, subtitle, products = [], bgColor
   if (products.length === 0) return null;
 
   return (
-    <section className={cn("px-6 md:px-10 py-24 font-sans relative overflow-hidden", bgColor)}>
+    <section className={cn("px-4 md:px-10 py-20 font-sans relative overflow-hidden", bgColor)}>
       
-      <div className="max-w-[1650px] mx-auto">
+      <div className="max-w-[1920px] mx-auto">
         
-        {/* --- SECTION HEADER (CENTERED & LARGE) --- */}
-        <div className="mb-16 text-center">
-          <h2 className="text-3xl md:text-4xl font-black text-black uppercase tracking-[0.15em]">
-            {title}
-          </h2>
-          <div className="w-20 h-1 bg-[#0047ab] mx-auto mt-4" />
-          {subtitle && (
-            <p className="mt-4 text-gray-400 text-[11px] font-black uppercase tracking-widest">
-              {subtitle}
-            </p>
-          )}
+        {/* --- SECTION HEADER --- */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div className="space-y-4">
+            <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 leading-none italic tracking-tighter">
+              Professional <span className="text-[#0ea5e9]">Printers</span>
+            </h2>
+          </div>
+          
+          {/* Custom Navigation Controls */}
+          <div className="flex items-center gap-2">
+            <button className="cs-prev h-12 w-12 bg-white flex items-center justify-center border border-zinc-200 hover:bg-[#0ea5e9] hover:text-white hover:border-[#0ea5e9] transition-all duration-300 shadow-sm group">
+              <ChevronLeft size={20} />
+            </button>
+            <button className="cs-next h-12 w-12 bg-white flex items-center justify-center border border-zinc-200 hover:bg-[#0ea5e9] hover:text-white hover:border-[#0ea5e9] transition-all duration-300 shadow-sm group">
+              <ChevronRight size={20} />
+            </button>
+          </div>
         </div>
 
         <div className="relative group">
           <Swiper
             modules={[Navigation, Autoplay]}
-            spaceBetween={30}
-            slidesPerView={1.2}
+            spaceBetween={20}
+            slidesPerView={1.1}
             autoplay={{ delay: 5000, disableOnInteraction: false }}
             navigation={{ prevEl: '.cs-prev', nextEl: '.cs-next' }}
             breakpoints={{
-              640: { slidesPerView: 2 },
-              1024: { slidesPerView: 3 },
-              1280: { slidesPerView: 4 },
-              1600: { slidesPerView: 5 },
+              768: { slidesPerView: 2 },
+              1280: { slidesPerView: 3 },
             }}
-            className="!overflow-visible !pb-4"
+            className="!overflow-visible"
           >
             {products.map((p, idx) => (
               <SwiperSlide key={p.id}>
                 <div 
-                  className="relative bg-white border border-gray-100 p-6 transition-all duration-500 flex flex-col group/card hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] hover:-translate-y-2 hover:border-[#0047ab]/30 h-full"
+                  className="relative bg-white border border-zinc-200 p-4 transition-all duration-500 flex flex-row items-center gap-6 group/card hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:border-[#0ea5e9]/30 h-[180px]"
                 >
-                  {/* BRAND LABEL (Restored) */}
-                  <div className="absolute top-4 left-4 z-20">
-                    <span className="text-[9px] font-black text-[#0047ab] bg-blue-50 border border-blue-100 px-3 py-1 rounded-full uppercase tracking-widest shadow-sm">
-                      {p.brand_name || 'Premium'}
-                    </span>
-                  </div>
-
-                  {/* Image Area */}
-                  <div className="relative aspect-square w-full flex items-center justify-center mb-8 px-4 overflow-hidden">
+                  {/* Image Area - Left Side */}
+                  <div className="relative h-full w-[140px] shrink-0 flex items-center justify-center overflow-hidden bg-zinc-50 p-4">
                     <img 
                       src={getImagePath(p.images)} 
                       className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover/card:scale-110" 
@@ -86,58 +83,57 @@ export default function CategorySlider({ title, subtitle, products = [], bgColor
                     />
                   </div>
 
-                  {/* Metadata */}
-                  <div className="space-y-3 mb-8">
-                    <Link to={`/product/${p.slug}`} className="block">
-                      <h3 className="font-bold text-gray-800 text-[14px] leading-tight line-clamp-1 uppercase tracking-tight group-hover/card:text-[#0047ab] transition-colors">
-                        {p.name}
-                      </h3>
-                    </Link>
-                    
-                    <div className="flex items-baseline gap-3">
-                      <span className="text-base font-black text-gray-900">${p.price}</span>
+                  {/* Content Area - Right Side */}
+                  <div className="flex-1 flex flex-col justify-between h-full py-1">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-start">
+                         <span className="text-[9px] font-black text-[#0ea5e9] uppercase tracking-widest">
+                          {p.brand_name || 'Premium'}
+                        </span>
+                        <button 
+                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
+                          className={cn(
+                            "transition-colors duration-300",
+                            isInWishlist(p.id) ? "text-red-500" : "text-zinc-300 hover:text-red-500"
+                          )}
+                        >
+                          <Heart size={16} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
+                        </button>
+                      </div>
+                      
+                      <Link to={`/product/${p.slug}`} className="block">
+                        <h3 className="font-bold text-zinc-800 text-[14px] leading-tight line-clamp-2 uppercase tracking-tight group-hover/card:text-[#0ea5e9] transition-colors">
+                          {p.name}
+                        </h3>
+                      </Link>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-auto pt-2 border-t border-zinc-50">
+                      <span className="text-base font-black text-zinc-900">${p.price}</span>
+                      
+                      <button 
+                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(p); }}
+                        disabled={addedItems[p.id]}
+                        className={cn(
+                          "h-9 w-9 rounded-lg border flex items-center justify-center transition-all duration-300 active:scale-90",
+                          addedItems[p.id] 
+                            ? "bg-emerald-500 border-emerald-500 text-white" 
+                            : "bg-white border-zinc-200 text-zinc-400 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 shadow-sm"
+                        )}
+                      >
+                        {addedItems[p.id] ? <Check size={16} /> : <ShoppingCart size={16} />}
+                      </button>
                     </div>
                   </div>
 
-                  {/* Bottom Action Area */}
-                  <div className="mt-auto grid grid-cols-3 gap-2 relative z-30">
-                    <button 
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(p); }}
-                      disabled={addedItems[p.id]}
-                      className={cn(
-                        "col-span-2 h-10 border text-[10px] font-black uppercase tracking-widest transition-all duration-300 active:scale-90",
-                        addedItems[p.id] 
-                          ? "bg-emerald-500 border-emerald-500 text-white" 
-                          : "bg-white border-gray-200 text-gray-800 hover:bg-[#0047ab] hover:text-white hover:border-[#0047ab]"
-                      )}
-                    >
-                      {addedItems[p.id] ? <Check size={16} className="mx-auto" /> : "Add To Cart"}
-                    </button>
-                    
-                    <button 
-                      onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
-                      className={cn(
-                        "h-10 border border-gray-200 flex items-center justify-center transition-all duration-300 active:scale-90",
-                        isInWishlist(p.id) ? "text-red-500 border-red-100 bg-red-50" : "text-gray-400 hover:bg-red-50 hover:text-red-500 hover:border-red-100"
-                      )}
-                    >
-                      <Heart size={16} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
-                    </button>
-                  </div>
-
-                  <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-[80%] z-0" />
+                  {/* Simple Bottom Accent Line on Hover */}
+                  <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#0ea5e9] transition-all duration-500 group-hover/card:w-full" />
+                  
+                  <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-full z-0" />
                 </div>
               </SwiperSlide>
             ))}
           </Swiper>
-
-          {/* Navigation Arrows (Side, Hover Visible) */}
-          <button className="cs-prev absolute left-[-20px] top-[45%] -translate-y-1/2 z-20 h-12 w-12 bg-white flex items-center justify-center shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50 transition-all opacity-0 group-hover:opacity-100 disabled:hidden rounded-sm active:scale-90">
-            <ChevronLeft size={20} strokeWidth={2.5} className="text-gray-600" />
-          </button>
-          <button className="cs-next absolute right-[-20px] top-[45%] -translate-y-1/2 z-20 h-12 w-12 bg-white flex items-center justify-center shadow-md border border-gray-100 cursor-pointer hover:bg-gray-50 transition-all opacity-0 group-hover:opacity-100 disabled:hidden rounded-sm active:scale-90">
-            <ChevronRight size={20} strokeWidth={2.5} className="text-gray-600" />
-          </button>
         </div>
       </div>
     </section>

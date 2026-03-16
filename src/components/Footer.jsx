@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Mail, Loader2, MapPin, ShieldCheck, ArrowRight, Phone, Clock } from 'lucide-react';
+import { Mail, Loader2, MapPin, ArrowRight, ShieldCheck, Clock, Phone } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useCart } from '../context/CartContext';
 import API_BASE_URL from '../config';
@@ -54,9 +54,8 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-[#002a6b] text-white pt-20 pb-10 font-sans border-t-4 border-[#ffb700]">
-      
-      <div className="max-w-[1650px] mx-auto px-6 md:px-10">
+    <footer className="bg-white text-zinc-600 pt-24 pb-12 font-sans border-t border-zinc-100">
+      <div className="max-w-full mx-auto px-6 md:px-10">
         
         {/* --- MAIN GRID --- */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-16 mb-20">
@@ -64,9 +63,9 @@ export default function Footer() {
           {/* Brand Column */}
           <div className="lg:col-span-4 space-y-8">
             <Link to="/">
-              <img src="/logo/MYPRINTERMANNN.png" alt="Printer Brother" className="h-12 w-auto object-contain brightness-0 invert " />
+              <img src="/logo/MYPRINTERMANNN.png" alt="DashPrinterShop" className="h-12 w-auto object-contain " />
             </Link>
-            <p className="text-blue-100/70 text-md font-medium leading-relaxed max-w-sm mt-5">
+            <p className="text-zinc-500 text-md font-medium leading-relaxed max-w-sm mt-5">
               Your premier destination for high-performance laser printers, precision document scanners, and high-quality hardware solutions engineered for the modern printing workspace.
             </p>
           </div>
@@ -74,11 +73,11 @@ export default function Footer() {
           {/* Links Columns */}
           <div className="lg:col-span-5 grid grid-cols-2 md:grid-cols-3 gap-8">
             <div className="space-y-6">
-              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#ffb700]">Collections</h4>
+              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-zinc-900">Collections</h4>
               <ul className="space-y-3">
                 {categories.map(cat => (
                   <li key={cat.id}>
-                    <Link to={`/shop?category=${cat.slug}`} className="text-blue-100/60 hover:text-[#ffb700] transition-all text-[13px] font-bold">
+                    <Link to={`/shop?category=${cat.slug}`} className="text-zinc-500 hover:text-[#0ea5e9] transition-all text-[13px] font-bold">
                       {cat.name}
                     </Link>
                   </li>
@@ -87,7 +86,7 @@ export default function Footer() {
             </div>
 
             <div className="space-y-6">
-              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#ffb700]">Support</h4>
+              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-zinc-900">Support</h4>
               <ul className="space-y-3">
                 {[
                   { name: 'About Us', path: '/about' },
@@ -96,7 +95,7 @@ export default function Footer() {
                   { name: 'FAQs', path: '/faq' }
                 ].map(item => (
                   <li key={item.name}>
-                    <Link to={item.path} className="text-blue-100/60 hover:text-[#ffb700] transition-all text-[13px] font-bold">
+                    <Link to={item.path} className="text-zinc-500 hover:text-[#0ea5e9] transition-all text-[13px] font-bold">
                       {item.name}
                     </Link>
                   </li>
@@ -105,7 +104,7 @@ export default function Footer() {
             </div>
 
             <div className="space-y-6">
-              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#ffb700]">Policies</h4>
+              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-zinc-900">Policies</h4>
               <ul className="space-y-3">
                 {[
                   { name: 'Privacy Policy', path: '/privacy-policy' },
@@ -115,7 +114,7 @@ export default function Footer() {
                   { name: 'Cookie Policy', path: '/cookie-policy' }
                 ].map(item => (
                   <li key={item.name}>
-                    <Link to={item.path} className="text-blue-100/60 hover:text-[#ffb700] transition-all text-[13px] font-bold">
+                    <Link to={item.path} className="text-zinc-500 hover:text-[#0ea5e9] transition-all text-[13px] font-bold">
                       {item.name}
                     </Link>
                   </li>
@@ -127,16 +126,16 @@ export default function Footer() {
           {/* Contact & Newsletter Column */}
           <div className="lg:col-span-3 space-y-10">
             <div className="space-y-4">
-              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-[#ffb700]">Stay Updated</h4>
+              <h4 className="text-[12px] font-black uppercase tracking-[0.2em] text-zinc-900">Stay Updated</h4>
               <form onSubmit={handleSubscribe} className="relative">
                 <input
                   required type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email Address"
-                  className="w-full bg-white/5 border border-white/10 rounded py-3.5 px-5 text-sm text-white focus:outline-none focus:border-[#ffb700] transition-all font-bold placeholder:text-blue-100/30"
+                  className="w-full bg-zinc-50 border border-zinc-200 rounded-xl py-3.5 px-5 text-sm text-zinc-900 focus:outline-none focus:border-[#0ea5e9] transition-all font-bold placeholder:text-zinc-300"
                 />
                 <button
                   disabled={loading}
-                  className="absolute right-2 top-1.5 bottom-1.5 px-4 bg-[#ffb700] text-[#003b95] rounded transition-all font-black text-[10px] uppercase hover:bg-white active:scale-95 flex items-center justify-center"
+                  className="absolute right-2 top-1.5 bottom-1.5 px-4 bg-zinc-900 text-white rounded-lg transition-all font-black text-[10px] uppercase hover:bg-[#0ea5e9] active:scale-95 flex items-center justify-center"
                 >
                   {loading ? <Loader2 className="animate-spin" size={16} /> : <ArrowRight size={18} strokeWidth={3} />}
                 </button>
@@ -145,17 +144,17 @@ export default function Footer() {
 
             <div className="space-y-4">
               <div className="flex items-start gap-4 group">
-                <div className="h-10 w-10 shrink-0 rounded bg-white/5 flex items-center justify-center text-[#ffb700] group-hover:bg-[#ffb700] group-hover:text-[#003b95] transition-all"><MapPin size={18} /></div>
+                <div className="h-10 w-10 shrink-0 rounded-xl bg-zinc-50 flex items-center justify-center text-[#0ea5e9] group-hover:bg-[#0ea5e9] group-hover:text-white transition-all border border-zinc-100"><MapPin size={18} /></div>
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#ffb700]">Location</p>
-                  <p className="text-[12px] font-bold text-blue-100/70 leading-tight">11872 Sunrise Valley Dr, Reston, VA 20191, USA</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Location</p>
+                  <p className="text-[12px] font-bold text-zinc-600 leading-tight">11872 Sunrise Valley Dr, Reston, VA 20191, USA</p>
                 </div>
               </div>
               <div className="flex items-start gap-4 group">
-                <div className="h-10 w-10 shrink-0 rounded bg-white/5 flex items-center justify-center text-[#ffb700] group-hover:bg-[#ffb700] group-hover:text-[#003b95] transition-all"><Mail size={18} /></div>
+                <div className="h-10 w-10 shrink-0 rounded-xl bg-zinc-50 flex items-center justify-center text-[#0ea5e9] group-hover:bg-[#0ea5e9] group-hover:text-white transition-all border border-zinc-100"><Mail size={18} /></div>
                 <div className="space-y-1">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-[#ffb700]">Email Us</p>
-                  <p className="text-[13px] font-bold text-blue-100/70 leading-tight">info@printerbrother.shop</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400">Email Us</p>
+                  <p className="text-[13px] font-bold text-zinc-600 leading-tight">info@dashprintershop.shop</p>
                 </div>
               </div>
             </div>
@@ -163,10 +162,10 @@ export default function Footer() {
         </div>
 
         {/* --- BOTTOM BAR --- */}
-        <div className="pt-10 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
+        <div className="pt-10 border-t border-zinc-100 flex flex-col md:flex-row justify-between items-center gap-8 text-center md:text-left">
           <div className="space-y-2">
-            <p className="text-[11px] font-black tracking-[0.2em] uppercase text-[#ffb700]">
-              © 2026 Printer Brother | All Rights Reserved.
+            <p className="text-[11px] font-black tracking-[0.2em] uppercase text-zinc-400">
+              © 2026 DashPrinterShop | All Rights Reserved.
             </p>
           </div>
           <div className="flex items-center gap-8 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-500">

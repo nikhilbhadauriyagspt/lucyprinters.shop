@@ -10,7 +10,7 @@ export default function Contact() {
     name: '',
     email: '',
     phone: '',
-    subject: 'General Inquiry',
+    subject: 'General Question',
     message: ''
   });
   const [loading, setLoading] = useState(false);
@@ -30,7 +30,7 @@ export default function Contact() {
       const data = await response.json();
       if (data.status === 'success') {
         setStatus('success');
-        setFormData({ name: '', email: '', phone: '', subject: 'General Inquiry', message: '' });
+        setFormData({ name: '', email: '', phone: '', subject: 'General Question', message: '' });
       } else {
         setStatus('error');
       }
@@ -42,160 +42,163 @@ export default function Contact() {
   };
 
   return (
-    <div className="bg-[#fcfcfc] min-h-screen font-snpro text-slate-900 overflow-x-hidden">
+    <div className="bg-white min-h-screen font-sans text-zinc-900 overflow-x-hidden">
       <SEO 
-        title="Contact Us | Printer Brother" 
-        description="Get in touch with Printer Brother for help with your equipment or deployment. Our team is here to assist you."
+        title="Contact Us | DashPrinterShop" 
+        description="Get in touch with DashPrinterShop for help with your printer or order. Our friendly team is here to help."
       />
       
-      {/* --- BENTO HERO SECTION --- */}
-      <section className="pt-12 pb-16 px-6 md:px-10 border-b border-gray-100 bg-white">
-        <div className="max-w-[1650px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-end">
+      {/* --- HERO SECTION --- */}
+      <section className="pt-20 pb-24 px-6 md:px-10 bg-zinc-50 border-b border-zinc-100">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                 <div className="w-10 h-1 bg-[#0047ab]" />
-                 <span className="text-[11px] font-black uppercase tracking-[0.3em] text-[#0047ab]">Support Center</span>
+                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0ea5e9]">Support Center</span>
               </div>
-              <h1 className="text-4xl md:text-7xl font-black text-black uppercase italic tracking-tighter leading-[0.9]">
+              <h1 className="text-5xl md:text-7xl font-bold text-zinc-900 leading-[1.1] tracking-tighter uppercase italic">
                 Get In <br />
-                <span className="text-[#0047ab]">Touch.</span>
+                <span className="text-[#0ea5e9]">Touch.</span>
               </h1>
-            </div>
-            <div className="lg:text-right pb-2">
-              <p className="text-gray-500 text-sm md:text-lg font-medium leading-relaxed max-w-md lg:ml-auto">
-                Connect with our deployment specialists for expert guidance, operational support, and order assistance.
+              <p className="text-zinc-500 text-lg md:text-xl font-medium leading-relaxed max-w-md">
+                Have a question about a printer or your order? Our friendly team is ready to help you find the right solution.
               </p>
+            </div>
+            <div className="hidden lg:block relative">
+               <div className="absolute inset-0 bg-[#0ea5e9]/5 rounded-[3rem] rotate-3 scale-105" />
+               <div className="relative bg-white p-12 rounded-[2.5rem] border border-zinc-100 shadow-xl space-y-8">
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-[#0ea5e9] shrink-0">
+                      <Mail size={24} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-1">Email Us</p>
+                      <p className="text-lg font-bold text-zinc-900">info@dashprintershop.shop</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-6">
+                    <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-[#0ea5e9] shrink-0">
+                      <MapPin size={24} />
+                    </div>
+                    <div>
+                      <p className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-1">Our Location</p>
+                      <p className="text-lg font-bold text-zinc-900 leading-snug">11872 Sunrise Valley Dr, <br/> Reston, VA 20191, USA</p>
+                    </div>
+                  </div>
+               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* --- MAIN CONTENT: GRID --- */}
-      <div className="max-w-[1650px] mx-auto px-6 md:px-10 py-20">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+      {/* --- MAIN CONTENT --- */}
+      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
           
-          {/* --- CONTACT INFO BENTO BLOCKS --- */}
-          <div className="lg:col-span-4 space-y-6">
-            <div className="p-10 bg-white border border-gray-100 flex flex-col justify-between h-56 group hover:border-[#0047ab]/30 transition-all relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                 <MessageSquare size={100} className="text-[#0047ab]" />
-              </div>
-              <div className="h-12 w-12 bg-gray-50 border border-gray-100 text-[#0047ab] flex items-center justify-center mb-6 transition-colors group-hover:bg-[#0047ab] group-hover:text-white relative z-10">
+          {/* --- INFO FOR MOBILE --- */}
+          <div className="lg:hidden space-y-6">
+            <div className="p-8 bg-zinc-50 rounded-3xl border border-zinc-100 flex items-center gap-6">
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-[#0ea5e9] shadow-sm">
                 <Mail size={20} />
               </div>
-              <div className="space-y-2 relative z-10">
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">General inquiry</p>
-                <h4 className="text-xl font-black text-black tracking-tight">info@printerbrother.shop</h4>
-              </div>
+              <p className="font-bold text-zinc-900">info@dashprintershop.shop</p>
             </div>
-
-            <div className="p-10 bg-white border border-gray-100 flex flex-col justify-between h-56 group hover:border-[#0047ab]/30 transition-all relative overflow-hidden">
-              <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
-                 <MapPin size={100} className="text-[#0047ab]" />
-              </div>
-              <div className="h-12 w-12 bg-gray-50 border border-gray-100 text-[#0047ab] flex items-center justify-center mb-6 transition-colors group-hover:bg-[#0047ab] group-hover:text-white relative z-10">
+            <div className="p-8 bg-zinc-50 rounded-3xl border border-zinc-100 flex items-center gap-6">
+              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-[#0ea5e9] shadow-sm">
                 <MapPin size={20} />
               </div>
-              <div className="space-y-2 relative z-10">
-                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest italic">Deployment HQ</p>
-                <h4 className="text-lg font-black text-black leading-tight tracking-tight">11872 Sunrise Valley Dr, <br/> Reston, VA 20191, USA</h4>
-              </div>
+              <p className="font-bold text-zinc-900 leading-snug">Reston, VA 20191, USA</p>
             </div>
-            
-
           </div>
 
-          {/* --- CONTACT FORM BLOCK --- */}
-          <div className="lg:col-span-8">
-            <div className="bg-white border border-gray-100 p-8 md:p-16 relative overflow-hidden">
-              {/* Form Decorative Elements */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gray-50 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none" />
+          {/* --- CONTACT FORM --- */}
+          <div className="lg:col-span-12 max-w-4xl mx-auto w-full">
+            <div className="bg-white rounded-[3rem] border border-zinc-100 p-8 md:p-16 shadow-2xl shadow-zinc-100">
               
               {status === 'success' ? (
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-24">
-                  <div className="h-20 w-20 bg-emerald-50 text-emerald-500 flex items-center justify-center mx-auto mb-8 border border-emerald-100">
+                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-16">
+                  <div className="h-20 w-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8 border border-emerald-100">
                     <CheckCircle2 size={40} />
                   </div>
-                  <h2 className="text-4xl font-black text-black uppercase italic tracking-tighter mb-4">Transmission Sent.</h2>
-                  <p className="text-gray-500 text-base font-medium mb-10 max-w-sm mx-auto">Your inquiry has been securely logged. Our specialists will respond within 24 hours.</p>
-                  <button onClick={() => setStatus(null)} className="px-12 py-4 bg-black text-white text-[11px] font-black uppercase tracking-[0.2em] hover:bg-[#0047ab] transition-all active:scale-95 shadow-xl">Initiate New Request</button>
+                  <h2 className="text-4xl font-bold text-zinc-900 tracking-tighter mb-4 uppercase italic">Message Sent!</h2>
+                  <p className="text-zinc-500 text-lg font-medium mb-10 max-w-sm mx-auto">We've received your message. Our team will get back to you within 24 hours.</p>
+                  <button onClick={() => setStatus(null)} className="px-10 py-4 bg-zinc-900 text-white rounded-xl text-[13px] font-bold transition-all hover:bg-[#0ea5e9] shadow-lg">Send Another Message</button>
                 </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
-                  <div className="space-y-2 mb-4">
-                     <h3 className="text-2xl font-black text-black uppercase italic tracking-tighter">Contact Us</h3>
-                     <p className="text-xs font-bold text-gray-400">Complete the form below to connect with our support infrastructure.</p>
+                <form onSubmit={handleSubmit} className="space-y-10">
+                  <div className="space-y-3">
+                     <h3 className="text-3xl font-bold text-zinc-900 tracking-tighter uppercase italic">Send a Message</h3>
+                     <p className="text-zinc-500 font-medium">Fill out the form below and we'll get back to you as soon as possible.</p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Full Name <span className="text-[#0047ab]">*</span></label>
+                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Your Name</label>
                       <input 
-                        required type="text" placeholder="John Doe" value={formData.name}
+                        required type="text" placeholder="Full Name" value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full h-14 px-5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-[#0047ab] outline-none text-sm font-bold transition-all"
+                        className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Email Address <span className="text-[#0047ab]">*</span></label>
+                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Email Address</label>
                       <input 
-                        required type="email" placeholder="john@example.com" value={formData.email}
+                        required type="email" placeholder="example@email.com" value={formData.email}
                         onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full h-14 px-5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-[#0047ab] outline-none text-sm font-bold transition-all"
+                        className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Phone Number</label>
+                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Phone Number</label>
                       <input 
-                        type="tel" placeholder="+1 (000) 000-0000" value={formData.phone}
+                        type="tel" placeholder="(000) 000-0000" value={formData.phone}
                         onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        className="w-full h-14 px-5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-[#0047ab] outline-none text-sm font-bold transition-all"
+                        className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all"
                       />
                     </div>
                     <div className="space-y-3">
-                      <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Department <span className="text-[#0047ab]">*</span></label>
+                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Subject</label>
                       <div className="relative">
                         <select 
                           value={formData.subject}
                           onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                          className="w-full h-14 px-5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-[#0047ab] outline-none text-sm font-bold transition-all appearance-none cursor-pointer pr-12"
+                          className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all appearance-none cursor-pointer pr-12"
                         >
-                          <option>General Inquiry</option>
-                          <option>Product Support</option>
-                          <option>Order Inquiries</option>
-                          <option>Warranty Claim</option>
+                          <option>General Question</option>
+                          <option>Printer Help</option>
+                          <option>Order Status</option>
+                          <option>Ink & Supplies</option>
                         </select>
-                        <ChevronDown className="absolute right-5 top-1/2 -translate-y-1/2 text-[#0047ab] pointer-events-none" size={18} />
+                        <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-[#0ea5e9] pointer-events-none" size={20} />
                       </div>
                     </div>
                   </div>
 
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Message Payload <span className="text-[#0047ab]">*</span></label>
+                    <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">How can we help?</label>
                     <textarea 
-                      required rows="6" placeholder="Detail your operational requirements..." value={formData.message}
+                      required rows="6" placeholder="Tell us more about what you need..." value={formData.message}
                       onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="w-full p-5 bg-gray-50 border border-gray-200 focus:bg-white focus:border-[#0047ab] outline-none text-sm font-bold transition-all resize-none"
+                      className="w-full p-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all resize-none"
                     ></textarea>
                   </div>
 
-                  <div className="pt-2">
+                  <div className="pt-4">
                     <button 
                       disabled={loading}
-                      className="w-full md:w-auto h-16 px-12 bg-black text-white flex items-center justify-center gap-4 text-[11px] font-black uppercase tracking-[0.2em] hover:bg-[#0047ab] transition-all disabled:opacity-50 active:scale-95 shadow-xl"
+                      className="w-full md:w-auto h-16 px-12 bg-zinc-900 text-white flex items-center justify-center gap-3 rounded-2xl text-[14px] font-bold transition-all hover:bg-[#0ea5e9] disabled:opacity-50 shadow-xl shadow-zinc-200"
                     >
                       {loading ? (
                         <Loader2 className="animate-spin" size={20} />
                       ) : (
-                        <>Send Request <ArrowRight size={20} strokeWidth={3} /></>
+                        <>Send Message <ArrowRight size={20} /></>
                       )}
                     </button>
                   </div>
-                  {status === 'error' && <p className="text-red-500 text-[10px] font-black uppercase tracking-widest mt-4">Transmission failed. Please verify network and try again.</p>}
+                  {status === 'error' && <p className="text-red-500 text-xs font-bold mt-4">Something went wrong. Please try again later.</p>}
                 </form>
               )}
             </div>

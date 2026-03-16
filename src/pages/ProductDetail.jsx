@@ -113,7 +113,7 @@ export default function ProductDetail() {
 
   return (
     <div className="bg-[#fcfcfc] min-h-screen pt-40 pb-24 font-snpro text-slate-900 overflow-x-hidden">
-      <SEO title={`${product.name} | Printer Brother`} description={product.description?.substring(0, 160)} />
+      <SEO title={`${product.name} | DashPrinterShop`} description={product.description?.substring(0, 160)} />
       
       <div className="max-w-[1650px] mx-auto px-6 md:px-10">
         

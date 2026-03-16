@@ -91,7 +91,7 @@ export default function Checkout() {
   if (cart.length === 0 && step !== 3) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 font-snpro bg-[#fcfcfc]">
-        <SEO title="Empty Checkout | Printer Brother" />
+        <SEO title="Empty Checkout | DashPrinterShop" />
         <div className="h-24 w-24 bg-white border border-gray-100 flex items-center justify-center mb-10 relative overflow-hidden group">
              <div className="absolute inset-0 bg-[#0047ab]/5 -translate-x-full group-hover:translate-x-0 transition-transform duration-700" />
              <ShoppingCart size={40} className="text-gray-200 relative z-10" />
@@ -108,7 +108,7 @@ export default function Checkout() {
   if (step === 3) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6 font-snpro bg-[#fcfcfc] text-center">
-        <SEO title="Order Confirmed | Printer Brother" />
+        <SEO title="Order Confirmed | DashPrinterShop" />
         <motion.div initial={{ scale: 0.8, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} className="relative mb-10">
           <div className="h-24 w-24 bg-white text-emerald-500 flex items-center justify-center shadow-xl border border-emerald-100 relative z-10 mx-auto overflow-hidden group">
             <div className="absolute inset-0 bg-emerald-50/50 -translate-x-full group-hover:translate-x-0 transition-transform duration-700" />
@@ -133,7 +133,7 @@ export default function Checkout() {
 
   return (
     <div className="min-h-screen bg-[#fcfcfc] pt-40 pb-24 font-snpro text-slate-900 overflow-x-hidden">
-      <SEO title="Secure Checkout | Printer Brother" />
+      <SEO title="Secure Checkout | DashPrinterShop" />
       <div className="max-w-[1650px] mx-auto px-6 md:px-10 relative z-10">
         
         {/* --- BENTO HEADER --- */}
@@ -292,7 +292,7 @@ export default function Checkout() {
                               style={{ layout: "vertical", shape: "rect", label: "pay" }}
                               createOrder={(data, actions) => {
                                 return actions.order.create({
-                                  purchase_units: [{ amount: { value: finalTotal.toString() }, description: `Printer Brother - ${cartCount} Units Deployment` }],
+                                  purchase_units: [{ amount: { value: finalTotal.toString() }, description: `DashPrinterShop - ${cartCount} Units Deployment` }],
                                 });
                               }}
                               onApprove={async (data, actions) => {
