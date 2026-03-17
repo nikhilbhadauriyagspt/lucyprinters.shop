@@ -84,36 +84,18 @@ export default function Home() {
   return (
     <div className="bg-white font-snpro overflow-x-hidden text-slate-900">
       <SEO 
-        title="DashPrinterShop | Premium Printers & Hardware" 
-        description="Premium destination for professional printers, and essential accessories. Delivering excellence in professional solutions across the USA."
+        title="LucyPrinters | Quality Printers & Hardware"
+        description="Your trusted source for high-quality printers and printing hardware. Delivering excellence across the USA."
       />
+
       
       <Hero />
 
-      {/* --- CREATIVE TICKER --- */}
-      <div className="bg-zinc-50 h-[60px] flex items-center overflow-hidden border-y border-zinc-100 font-sans">
-        <div className="flex whitespace-nowrap animate-marquee items-center gap-16">
-           {[...Array(4)].map((_, i) => (
-             <div key={i} className="flex items-center gap-16">
-               {(data.categories || []).flatMap(cat => cat.children || []).slice(0, 10).map((sub, idx) => (
-                 <Link 
-                   key={`${i}-${idx}`} 
-                   to={`/shop?category=${sub.slug}`}
-                   className="text-[13px] text-zinc-500 uppercase tracking-[0.2em] flex items-center gap-3 hover:text-[#0ea5e9] transition-colors"
-                 >
-                   <Zap size={14} className="text-[#0ea5e9]" />
-                   {sub.name}
-                 </Link>
-               ))}
-             </div>
-           ))}
-        </div>
-      </div>
 
       <Features />      <ShopByCategory categories={data.categories} />
-      
-      <BestSellers products={data.all} />
       <TripleBanners />
+      <BestSellers products={data.all} />
+      
       
       <ProductGrid products={data.mixedArrivals.slice(0, 30)} />
        <Collections />
@@ -122,41 +104,47 @@ export default function Home() {
         products={data.printers} 
       />
        
-      {/* --- SIMPLE CONTACT CTA SECTION --- */}
-      <section className="py-20 bg-white">
-        <div className="max-w-[1400px] mx-auto px-6">
-          <div className="bg-zinc-50 rounded-[2.5rem] p-12 md:p-20 text-center border border-zinc-100 relative overflow-hidden">
-            {/* Subtle Decorative Circle */}
-            <div className="absolute -top-24 -right-24 w-64 h-64 bg-[#0ea5e9]/5 rounded-full blur-3xl" />
+      {/* --- MINIMAL CONTACT CTA SECTION --- */}
+      <section className="py-12 bg-white font-jakarta">
+        <div className="max-w-[1600px] mx-auto px-4 md:px-10">
+          <div className="relative rounded-sm p-10 md:p-16 text-center overflow-hidden min-h-[300px] flex items-center justify-center border border-gray-100 shadow-md">
+            {/* Background Image with Overlay */}
+            <img 
+              src="/src/assets/bannerr/banner6.jpg" 
+              alt="Support" 
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-white/90" />
 
-            <div className="max-w-2xl mx-auto space-y-8 relative z-10">
-              <div className="space-y-4">
-                <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 tracking-tight italic">
-                  Need a <span className="text-[#0ea5e9]">Pro's advice?</span>
+            <div className="max-w-xl mx-auto space-y-6 relative z-10">
+              <div className="space-y-3">
+                <h2 className="text-2xl md:text-3xl font-bold text-black leading-tight">
+                  Need expert help for <br /> <span className="text-blue-600 font-medium">your business?</span>
                 </h2>
-                <p className="text-zinc-500 text-lg md:text-xl font-medium">
-                  We'll help you find the perfect printing solution for your business or home.
+                <p className="text-gray-500 text-sm md:text-base font-normal max-w-sm mx-auto">
+                  Find the perfect printing setup with our professional advice. We are here to help you 24/7.
                 </p>
               </div>
 
-              <div className="flex flex-wrap justify-center gap-4">
+              <div className="flex flex-wrap justify-center gap-4 pt-2">
                 <Link
                   to="/contact"
-                  className="bg-[#0ea5e9] hover:bg-zinc-900 text-white px-10 py-4 rounded-2xl font-bold transition-all duration-300 shadow-lg shadow-[#0ea5e9]/20"
+                  className="bg-blue-600 hover:bg-black text-white px-8 py-3 rounded-sm font-bold text-sm transition-all duration-300"
                 >
-                  Talk to an Expert
+                  Contact An Expert
                 </Link>
                 <Link
                   to="/faq"
-                  className="bg-white hover:bg-zinc-50 text-zinc-900 border border-zinc-200 px-10 py-4 rounded-2xl font-bold transition-all duration-300"
+                  className="bg-gray-100 hover:bg-gray-200 text-black px-8 py-3 rounded-sm font-bold text-sm transition-all duration-300"
                 >
-                  Browse FAQs
+                  View FAQ
                 </Link>
               </div>
             </div>
           </div>
         </div>
-      </section>    </div>
+      </section>
+    </div>
     
   );
   

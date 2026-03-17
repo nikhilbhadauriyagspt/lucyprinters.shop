@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  --font-jakarta: "Plus Jakarta Sans", sans-serif;
   --font-urbanist: "Urbanist", sans-serif;
   --font-snpro: "SN Pro", sans-serif;
 }
@@ -21,13 +22,18 @@
 }
 
 :root {
-  font-family: var(--font-snpro);
+  font-family: var(--font-jakarta);
+  --primary: #064e3b; /* emerald-950 (Deep Forest Green) */
+  --primary-light: #10b981; /* emerald-500 */
+  --primary-soft: #ecfdf5; /* emerald-50 */
 }
 
 body {
   margin: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color: #022c22; /* emerald-950 for text */
+  background-color: #fff;
 }
 
 @utility no-scrollbar {
@@ -46,10 +52,10 @@ body {
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
+    background: #d1d5db; 
     border-radius: 10px;
   }
   &::-webkit-scrollbar-thumb:hover {
-    background: #d1d5db;
+    background: #10b981; 
   }
 }

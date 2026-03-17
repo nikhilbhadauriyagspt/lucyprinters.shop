@@ -1,49 +1,44 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { ChevronRight, Clock, FileText } from 'lucide-react';
+import { ChevronRight, Clock, Shield } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 export default function PolicyLayout({ title, subtitle, lastUpdated, children }) {
   return (
-    <div className="bg-white min-h-screen font-sans pb-20 text-zinc-900">
-      {/* --- REDESIGNED PAGE HEADER --- */}
-      <header className="pt-32 pb-20 bg-zinc-50 border-b border-zinc-100">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-10">
+    <div className="bg-white min-h-screen font-jakarta pb-20 text-gray-900">
+      {/* --- PREMIUM POLICY HEADER --- */}
+      <header className="pt-16 pb-12 px-4 md:px-10 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-[1600px] mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
           >
             {/* Breadcrumb */}
-            <div className="flex items-center gap-3 mb-8 text-[10px] font-black uppercase tracking-[0.4em] text-[#0ea5e9]">
-              <Link to="/" className="hover:text-zinc-900 transition-colors">Home</Link>
-              <ChevronRight size={10} className="text-zinc-300" />
-              <span className="text-zinc-400">Legal Document</span>
+            <div className="flex items-center gap-3 mb-6 text-[10px] font-black uppercase tracking-[0.3em] text-blue-600">
+              <Link to="/" className="hover:text-black transition-colors">Home</Link>
+              <ChevronRight size={10} className="text-gray-300" />
+              <span className="text-gray-400">Legal Policy</span>
             </div>
 
-            {/* Main Heading */}
-            <div className="grid lg:grid-cols-2 gap-12 items-end">
-              <div className="space-y-6">
-                <h1 className="text-5xl md:text-7xl font-bold leading-none uppercase italic tracking-tighter">
-                  {title.split(' ')[0]} <br/>
-                  <span className="text-[#0ea5e9]">{title.split(' ').slice(1).join(' ')}</span>
+            <div className="flex flex-col md:flex-row md:items-end justify-between gap-8">
+              <div className="space-y-4">
+                <h1 className="text-3xl md:text-5xl font-black text-black uppercase tracking-tight">
+                  {title}
                 </h1>
                 {subtitle && (
-                  <p className="text-zinc-500 text-lg md:text-xl font-medium max-w-xl leading-relaxed">
+                  <p className="text-gray-500 text-sm md:text-base font-medium max-w-xl leading-relaxed">
                     {subtitle}
                   </p>
                 )}
               </div>
 
-              <div className="lg:text-right">
-                <div className="inline-flex items-center gap-4 bg-white px-6 py-4 rounded-[2rem] border border-zinc-100 shadow-xl shadow-zinc-200/50">
-                  <div className="w-10 h-10 rounded-full bg-blue-50 flex items-center justify-center text-[#0ea5e9]">
-                    <Clock size={18} />
-                  </div>
-                  <div className="text-left">
-                    <p className="text-[10px] font-black uppercase tracking-widest text-zinc-400 leading-none mb-1">Last Updated</p>
-                    <p className="text-sm font-bold text-zinc-900 leading-none">{lastUpdated}</p>
-                  </div>
+              <div className="shrink-0 flex items-center gap-4 bg-white px-6 py-4 rounded-sm border border-gray-100 shadow-sm">
+                <div className="h-10 w-10 bg-blue-50 flex items-center justify-center rounded-full text-blue-600">
+                  <Clock size={18} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-black uppercase text-gray-400 leading-none mb-1">Revised on</p>
+                  <p className="text-sm font-bold text-black leading-none">{lastUpdated}</p>
                 </div>
               </div>
             </div>
@@ -51,13 +46,13 @@ export default function PolicyLayout({ title, subtitle, lastUpdated, children })
         </div>
       </header>
 
-      {/* --- CONTENT --- */}
-      <article className="max-w-[1400px] mx-auto px-6 md:px-10 py-24">
+      {/* --- POLICY CONTENT --- */}
+      <article className="max-w-[1600px] mx-auto px-4 md:px-10 py-20">
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="max-w-4xl prose prose-zinc prose-headings:font-bold prose-headings:uppercase prose-headings:italic prose-headings:tracking-tighter prose-headings:text-zinc-900 prose-h2:text-3xl prose-h2:pt-16 prose-h2:mb-8 prose-h2:border-b prose-h2:border-zinc-100 prose-h2:pb-4 prose-p:text-zinc-500 prose-p:text-lg prose-p:font-medium prose-p:leading-relaxed prose-li:text-zinc-500 prose-li:font-medium prose-strong:text-zinc-900 prose-a:text-[#0ea5e9] prose-a:font-bold prose-a:no-underline hover:prose-a:underline"
+          className="max-w-4xl prose prose-zinc prose-headings:font-black prose-headings:uppercase prose-headings:text-black prose-h2:text-2xl prose-h2:pt-12 prose-h2:mb-6 prose-h2:border-b prose-h2:border-gray-100 prose-h2:pb-3 prose-p:text-gray-600 prose-p:text-sm prose-p:leading-relaxed prose-li:text-gray-600 prose-li:text-sm prose-strong:text-black prose-a:text-blue-600 prose-a:font-bold hover:prose-a:text-black transition-colors"
         >
           {children}
         </motion.div>

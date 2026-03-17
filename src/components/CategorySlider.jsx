@@ -1,16 +1,11 @@
 import { motion } from "framer-motion";
-import { Heart, Check, ChevronLeft, ChevronRight, ShoppingCart } from "lucide-react";
+import { Heart, Check, ArrowRight, Eye, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
 import { cn } from "../lib/utils";
 
-import 'swiper/css';
-import 'swiper/css/navigation';
-
-export default function CategorySlider({ title, subtitle, products = [], bgColor = "bg-white" }) {
+export default function CategorySlider({ title, subtitle, products = [] }) {
   const { addToCart, toggleWishlist, isInWishlist } = useCart();
   const [addedItems, setAddedItems] = useState({});
 
@@ -33,107 +28,102 @@ export default function CategorySlider({ title, subtitle, products = [], bgColor
   if (products.length === 0) return null;
 
   return (
-    <section className={cn("px-4 md:px-10 py-20 font-sans relative overflow-hidden", bgColor)}>
-      
-      <div className="max-w-[1920px] mx-auto">
+    <section className="bg-white py-16 w-full overflow-hidden font-jakarta border-t border-gray-100">
+      <div className="w-full">
         
-        {/* --- SECTION HEADER --- */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
-          <div className="space-y-4">
-            <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 leading-none italic tracking-tighter">
-              Professional <span className="text-[#0ea5e9]">Printers</span>
-            </h2>
+        {/* --- BADGE-STYLE SECTION HEADER (Matches Homepage Theme) --- */}
+        <div className="flex items-center justify-between mb-12">
+          <div className="relative flex items-center h-14">
+            <div className="bg-blue-600 h-full w-[470px] absolute left-0 rounded-r-full" />
+            <div className="relative z-10 pl-4 md:pl-10">
+              <h2 className="text-xl md:text-2xl font-black text-white uppercase tracking-wider">
+                Professional <span className="text-yellow-400 font-black">Printers</span>
+              </h2>
+            </div>
           </div>
           
-          {/* Custom Navigation Controls */}
-          <div className="flex items-center gap-2">
-            <button className="cs-prev h-12 w-12 bg-white flex items-center justify-center border border-zinc-200 hover:bg-[#0ea5e9] hover:text-white hover:border-[#0ea5e9] transition-all duration-300 shadow-sm group">
-              <ChevronLeft size={20} />
-            </button>
-            <button className="cs-next h-12 w-12 bg-white flex items-center justify-center border border-zinc-200 hover:bg-[#0ea5e9] hover:text-white hover:border-[#0ea5e9] transition-all duration-300 shadow-sm group">
-              <ChevronRight size={20} />
-            </button>
-          </div>
+          <Link 
+            to="/shop" 
+            className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-colors pr-4 md:pr-10"
+          >
+            Full Collection <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+          </Link>
         </div>
 
-        <div className="relative group">
-          <Swiper
-            modules={[Navigation, Autoplay]}
-            spaceBetween={20}
-            slidesPerView={1.1}
-            autoplay={{ delay: 5000, disableOnInteraction: false }}
-            navigation={{ prevEl: '.cs-prev', nextEl: '.cs-next' }}
-            breakpoints={{
-              768: { slidesPerView: 2 },
-              1280: { slidesPerView: 3 },
-            }}
-            className="!overflow-visible"
-          >
-            {products.map((p, idx) => (
-              <SwiperSlide key={p.id}>
-                <div 
-                  className="relative bg-white border border-zinc-200 p-4 transition-all duration-500 flex flex-row items-center gap-6 group/card hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)] hover:border-[#0ea5e9]/30 h-[180px]"
+        {/* --- LANDSCAPE PRODUCT GRID --- */}
+        <div className="px-4 md:px-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {products.slice(0, 12).map((p, idx) => (
+            <motion.div 
+              key={p.id}
+              initial={{ opacity: 0, x: 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: (idx % 3) * 0.1 }}
+              className="group relative flex flex-row items-center h-[180px] bg-white border border-gray-100 rounded-sm overflow-hidden transition-all duration-500 hover:shadow-xl hover:border-blue-600/20"
+            >
+              {/* Image Area (Left) */}
+              <div className="w-1/3 h-full bg-[#f9fafb] flex items-center justify-center p-4 overflow-hidden relative border-r border-gray-50">
+                <img 
+                  src={getImagePath(p.images)} 
+                  alt={p.name} 
+                  className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
+                />
+                
+                {/* Wishlist Button */}
+                <button 
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
+                  className={cn(
+                    "absolute top-2 left-2 h-8 w-8 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm z-20 border border-gray-100",
+                    isInWishlist(p.id) ? "bg-white text-red-500" : "bg-white text-gray-300 hover:text-red-500"
+                  )}
                 >
-                  {/* Image Area - Left Side */}
-                  <div className="relative h-full w-[140px] shrink-0 flex items-center justify-center overflow-hidden bg-zinc-50 p-4">
-                    <img 
-                      src={getImagePath(p.images)} 
-                      className="max-w-full max-h-full object-contain mix-blend-multiply transition-transform duration-700 group-hover/card:scale-110" 
-                      alt={p.name} 
-                    />
-                  </div>
+                  <Heart size={14} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
+                </button>
+              </div>
 
-                  {/* Content Area - Right Side */}
-                  <div className="flex-1 flex flex-col justify-between h-full py-1">
-                    <div className="space-y-2">
-                      <div className="flex justify-between items-start">
-                         <span className="text-[9px] font-black text-[#0ea5e9] uppercase tracking-widest">
-                          {p.brand_name || 'Premium'}
-                        </span>
-                        <button 
-                          onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
-                          className={cn(
-                            "transition-colors duration-300",
-                            isInWishlist(p.id) ? "text-red-500" : "text-zinc-300 hover:text-red-500"
-                          )}
-                        >
-                          <Heart size={16} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
-                        </button>
-                      </div>
-                      
-                      <Link to={`/product/${p.slug}`} className="block">
-                        <h3 className="font-bold text-zinc-800 text-[14px] leading-tight line-clamp-2 uppercase tracking-tight group-hover/card:text-[#0ea5e9] transition-colors">
-                          {p.name}
-                        </h3>
-                      </Link>
-                    </div>
-
-                    <div className="flex items-center justify-between mt-auto pt-2 border-t border-zinc-50">
-                      <span className="text-base font-black text-zinc-900">${p.price}</span>
-                      
-                      <button 
-                        onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(p); }}
-                        disabled={addedItems[p.id]}
-                        className={cn(
-                          "h-9 w-9 rounded-lg border flex items-center justify-center transition-all duration-300 active:scale-90",
-                          addedItems[p.id] 
-                            ? "bg-emerald-500 border-emerald-500 text-white" 
-                            : "bg-white border-zinc-200 text-zinc-400 hover:bg-zinc-900 hover:text-white hover:border-zinc-900 shadow-sm"
-                        )}
-                      >
-                        {addedItems[p.id] ? <Check size={16} /> : <ShoppingCart size={16} />}
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Simple Bottom Accent Line on Hover */}
-                  <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#0ea5e9] transition-all duration-500 group-hover/card:w-full" />
-                  
-                  <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-full z-0" />
+              {/* Info Area (Right) */}
+              <div className="w-2/3 p-5 flex flex-col justify-between h-full">
+                <div className="space-y-1">
+                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest group-hover:text-blue-600 transition-colors">
+                    {p.brand_name || 'Professional'}
+                  </span>
+                  <Link to={`/product/${p.slug}`}>
+                    <h3 className="text-[14px] font-bold text-gray-900 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
+                      {p.name}
+                    </h3>
+                  </Link>
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+
+                <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-50">
+                  <p className="text-lg font-black text-blue-600">${p.price}</p>
+                  
+                  <div className="flex items-center gap-2">
+                    <Link 
+                      to={`/product/${p.slug}`}
+                      className="h-9 w-9 bg-gray-50 text-gray-400 hover:bg-black hover:text-white flex items-center justify-center rounded-sm transition-all"
+                    >
+                      <Eye size={18} />
+                    </Link>
+                    <button 
+                      onClick={() => handleAddToCart(p)}
+                      disabled={addedItems[p.id]}
+                      className={cn(
+                        "h-9 w-9 flex items-center justify-center transition-all rounded-sm shadow-sm",
+                        addedItems[p.id] 
+                          ? "bg-green-600 text-white" 
+                          : "bg-blue-600 text-white hover:bg-black active:scale-95"
+                      )}
+                    >
+                      {addedItems[p.id] ? <Check size={18} /> : <ShoppingCart size={18} />}
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Full Card Link Overlay (behind buttons) */}
+              <Link to={`/product/${p.slug}`} className="absolute inset-0 z-0" />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>

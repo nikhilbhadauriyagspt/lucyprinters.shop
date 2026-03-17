@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import SEO from '@/components/SEO';
-import { Mail, MapPin, CheckCircle2, Loader2, ArrowRight, ChevronDown, Phone, MessageSquare } from 'lucide-react';
+import { Mail, MapPin, CheckCircle2, Loader2, ArrowRight, ChevronDown, Phone, MessageSquare, Clock } from 'lucide-react';
 import API_BASE_URL from '../config';
 import { cn } from '../lib/utils';
 
@@ -42,170 +42,164 @@ export default function Contact() {
   };
 
   return (
-    <div className="bg-white min-h-screen font-sans text-zinc-900 overflow-x-hidden">
+    <div className="bg-white min-h-screen font-jakarta text-gray-900 overflow-x-hidden">
       <SEO 
-        title="Contact Us | DashPrinterShop" 
-        description="Get in touch with DashPrinterShop for help with your printer or order. Our friendly team is here to help."
+        title="Contact Us | LucyPrinters" 
+        description="Get in touch with LucyPrinters for help with your printer or order. Our friendly team is here to help."
       />
       
-      {/* --- HERO SECTION --- */}
-      <section className="pt-20 pb-24 px-6 md:px-10 bg-zinc-50 border-b border-zinc-100">
-        <div className="max-w-[1400px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                 <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0ea5e9]">Support Center</span>
-              </div>
-              <h1 className="text-5xl md:text-7xl font-bold text-zinc-900 leading-[1.1] tracking-tighter uppercase italic">
-                Get In <br />
-                <span className="text-[#0ea5e9]">Touch.</span>
-              </h1>
-              <p className="text-zinc-500 text-lg md:text-xl font-medium leading-relaxed max-w-md">
-                Have a question about a printer or your order? Our friendly team is ready to help you find the right solution.
-              </p>
-            </div>
-            <div className="hidden lg:block relative">
-               <div className="absolute inset-0 bg-[#0ea5e9]/5 rounded-[3rem] rotate-3 scale-105" />
-               <div className="relative bg-white p-12 rounded-[2.5rem] border border-zinc-100 shadow-xl space-y-8">
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-[#0ea5e9] shrink-0">
-                      <Mail size={24} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-1">Email Us</p>
-                      <p className="text-lg font-bold text-zinc-900">info@dashprintershop.shop</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-6">
-                    <div className="w-14 h-14 rounded-2xl bg-blue-50 flex items-center justify-center text-[#0ea5e9] shrink-0">
-                      <MapPin size={24} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-black uppercase tracking-widest text-zinc-400 mb-1">Our Location</p>
-                      <p className="text-lg font-bold text-zinc-900 leading-snug">414 SW Adams St, <br/> Peoria, IL 61602, USA</p>
-                    </div>
-                  </div>
-               </div>
-            </div>
-          </div>
+      {/* --- HERO HEADER --- */}
+      <section className="pt-16 pb-12 px-4 md:px-10 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-[1600px] mx-auto text-center space-y-4">
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-blue-600 text-xs font-black uppercase tracking-[0.3em] block"
+          >
+            Support Center
+          </motion.span>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-5xl font-black text-black uppercase tracking-tight"
+          >
+            Get In <span className="text-blue-600">Touch</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-500 text-sm md:text-base font-medium max-w-2xl mx-auto leading-relaxed"
+          >
+            Have a question about our printers or an existing order? Our technical team is ready to assist you.
+          </motion.p>
         </div>
       </section>
 
       {/* --- MAIN CONTENT --- */}
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10 py-24">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
-          
-          {/* --- INFO FOR MOBILE --- */}
-          <div className="lg:hidden space-y-6">
-            <div className="p-8 bg-zinc-50 rounded-3xl border border-zinc-100 flex items-center gap-6">
-              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-[#0ea5e9] shadow-sm">
-                <Mail size={20} />
+      <section className="py-20 px-4 md:px-10">
+        <div className="max-w-[1600px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+            
+            {/* --- CONTACT INFO SIDEBAR --- */}
+            <div className="lg:col-span-4 space-y-10">
+              <div className="space-y-6">
+                <h3 className="text-xl font-black text-black uppercase tracking-tight border-b-2 border-blue-600 pb-2 inline-block">Direct Contact</h3>
+                <div className="space-y-6">
+                  <div className="flex items-start gap-5 p-6 bg-gray-50 rounded-sm border border-gray-100 group transition-all hover:border-blue-600/20">
+                    <div className="h-12 w-12 bg-white flex items-center justify-center text-blue-600 border border-gray-100 rounded-full shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <Mail size={20} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-1">Email Us</p>
+                      <p className="text-[15px] font-bold text-black">info@lucyprinters.shop</p>
+                    </div>
+                  </div>
+
+                  <div className="flex items-start gap-5 p-6 bg-gray-50 rounded-sm border border-gray-100 group transition-all hover:border-blue-600/20">
+                    <div className="h-12 w-12 bg-white flex items-center justify-center text-blue-600 border border-gray-100 rounded-full shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <MapPin size={20} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-black uppercase text-gray-400 tracking-widest mb-1">Location</p>
+                      <p className="text-[15px] font-bold text-black leading-snug">2453 Hennepin Ave, <br/> Minneapolis, MN 55405, USA</p>
+                    </div>
+                  </div>
+
+                 
+                </div>
               </div>
-              <p className="font-bold text-zinc-900">info@dashprintershop.shop</p>
             </div>
-            <div className="p-8 bg-zinc-50 rounded-3xl border border-zinc-100 flex items-center gap-6">
-              <div className="w-12 h-12 rounded-xl bg-white flex items-center justify-center text-[#0ea5e9] shadow-sm">
-                <MapPin size={20} />
-              </div>
-              <p className="font-bold text-zinc-900 leading-snug">Reston, VA 20191, USA</p>
-            </div>
-          </div>
 
-          {/* --- CONTACT FORM --- */}
-          <div className="lg:col-span-12 max-w-4xl mx-auto w-full">
-            <div className="bg-white rounded-[3rem] border border-zinc-100 p-8 md:p-16 shadow-2xl shadow-zinc-100">
-              
-              {status === 'success' ? (
-                <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-16">
-                  <div className="h-20 w-20 bg-emerald-50 text-emerald-500 rounded-full flex items-center justify-center mx-auto mb-8 border border-emerald-100">
-                    <CheckCircle2 size={40} />
-                  </div>
-                  <h2 className="text-4xl font-bold text-zinc-900 tracking-tighter mb-4 uppercase italic">Message Sent!</h2>
-                  <p className="text-zinc-500 text-lg font-medium mb-10 max-w-sm mx-auto">We've received your message. Our team will get back to you within 24 hours.</p>
-                  <button onClick={() => setStatus(null)} className="px-10 py-4 bg-zinc-900 text-white rounded-xl text-[13px] font-bold transition-all hover:bg-[#0ea5e9] shadow-lg">Send Another Message</button>
-                </motion.div>
-              ) : (
-                <form onSubmit={handleSubmit} className="space-y-10">
-                  <div className="space-y-3">
-                     <h3 className="text-3xl font-bold text-zinc-900 tracking-tighter uppercase italic">Send a Message</h3>
-                     <p className="text-zinc-500 font-medium">Fill out the form below and we'll get back to you as soon as possible.</p>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Your Name</label>
-                      <input 
-                        required type="text" placeholder="Full Name" value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all"
-                      />
+            {/* --- CONTACT FORM --- */}
+            <div className="lg:col-span-8">
+              <div className="bg-white border border-gray-100 p-8 md:p-12 rounded-sm shadow-2xl shadow-gray-100">
+                {status === 'success' ? (
+                  <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center py-12">
+                    <div className="h-20 w-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-100">
+                      <CheckCircle2 size={40} />
                     </div>
-                    <div className="space-y-3">
-                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Email Address</label>
-                      <input 
-                        required type="email" placeholder="example@email.com" value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
-                        className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Phone Number</label>
-                      <input 
-                        type="tel" placeholder="(000) 000-0000" value={formData.phone}
-                        onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                        className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all"
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">Subject</label>
-                      <div className="relative">
-                        <select 
-                          value={formData.subject}
-                          onChange={(e) => setFormData({...formData, subject: e.target.value})}
-                          className="w-full h-14 px-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all appearance-none cursor-pointer pr-12"
-                        >
-                          <option>General Question</option>
-                          <option>Printer Help</option>
-                          <option>Order Status</option>
-                          <option>Ink & Supplies</option>
-                        </select>
-                        <ChevronDown className="absolute right-6 top-1/2 -translate-y-1/2 text-[#0ea5e9] pointer-events-none" size={20} />
+                    <h2 className="text-3xl font-black text-black uppercase mb-4">Message Sent</h2>
+                    <p className="text-gray-500 mb-8 max-w-sm mx-auto">We've received your request. A technical advisor will contact you within 24 hours.</p>
+                    <button onClick={() => setStatus(null)} className="px-10 py-4 bg-black text-white rounded-sm font-black uppercase text-xs hover:bg-blue-600 transition-all">Send Another</button>
+                  </motion.div>
+                ) : (
+                  <form onSubmit={handleSubmit} className="space-y-8">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-1">Full Name</label>
+                        <input 
+                          required type="text" placeholder="e.g. John Doe" value={formData.name}
+                          onChange={(e) => setFormData({...formData, name: e.target.value})}
+                          className="w-full h-12 px-5 bg-gray-50 border border-gray-200 rounded-sm focus:bg-white focus:border-blue-600 outline-none text-[14px] font-medium transition-all"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-1">Email Address</label>
+                        <input 
+                          required type="email" placeholder="e.g. john@business.com" value={formData.email}
+                          onChange={(e) => setFormData({...formData, email: e.target.value})}
+                          className="w-full h-12 px-5 bg-gray-50 border border-gray-200 rounded-sm focus:bg-white focus:border-blue-600 outline-none text-[14px] font-medium transition-all"
+                        />
                       </div>
                     </div>
-                  </div>
 
-                  <div className="space-y-3">
-                    <label className="text-[11px] font-black text-zinc-400 uppercase tracking-widest">How can we help?</label>
-                    <textarea 
-                      required rows="6" placeholder="Tell us more about what you need..." value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
-                      className="w-full p-6 bg-zinc-50 border border-zinc-200 rounded-2xl focus:bg-white focus:border-[#0ea5e9] outline-none text-[15px] font-bold transition-all resize-none"
-                    ></textarea>
-                  </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-1">Phone Number</label>
+                        <input 
+                          type="tel" placeholder="Optional" value={formData.phone}
+                          onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                          className="w-full h-12 px-5 bg-gray-50 border border-gray-200 rounded-sm focus:bg-white focus:border-blue-600 outline-none text-[14px] font-medium transition-all"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-1">Subject</label>
+                        <div className="relative">
+                          <select 
+                            value={formData.subject}
+                            onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                            className="w-full h-12 px-5 bg-gray-50 border border-gray-200 rounded-sm focus:bg-white focus:border-blue-600 outline-none text-[14px] font-medium transition-all appearance-none cursor-pointer pr-12"
+                          >
+                            <option>General Question</option>
+                            <option>Printer Help</option>
+                            <option>Order Status</option>
+                            <option>Technical Support</option>
+                          </select>
+                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-600 pointer-events-none" size={18} />
+                        </div>
+                      </div>
+                    </div>
 
-                  <div className="pt-4">
+                    <div className="space-y-2">
+                      <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest pl-1">Message Details</label>
+                      <textarea 
+                        required rows="5" placeholder="How can our technical team assist you?" value={formData.message}
+                        onChange={(e) => setFormData({...formData, message: e.target.value})}
+                        className="w-full p-5 bg-gray-50 border border-gray-200 rounded-sm focus:bg-white focus:border-blue-600 outline-none text-[14px] font-medium transition-all resize-none"
+                      ></textarea>
+                    </div>
+
                     <button 
                       disabled={loading}
-                      className="w-full md:w-auto h-16 px-12 bg-zinc-900 text-white flex items-center justify-center gap-3 rounded-2xl text-[14px] font-bold transition-all hover:bg-[#0ea5e9] disabled:opacity-50 shadow-xl shadow-zinc-200"
+                      className="w-full md:w-auto h-14 px-12 bg-black text-white flex items-center justify-center gap-3 rounded-sm text-[12px] font-black uppercase tracking-widest transition-all hover:bg-blue-600 disabled:opacity-50 active:scale-95 shadow-xl"
                     >
                       {loading ? (
                         <Loader2 className="animate-spin" size={20} />
                       ) : (
-                        <>Send Message <ArrowRight size={20} /></>
+                        <>Send Message <ArrowRight size={18} /></>
                       )}
                     </button>
-                  </div>
-                  {status === 'error' && <p className="text-red-500 text-xs font-bold mt-4">Something went wrong. Please try again later.</p>}
-                </form>
-              )}
+                    {status === 'error' && <p className="text-red-500 text-xs font-bold mt-4">Failed to send message. Please try again.</p>}
+                  </form>
+                )}
+              </div>
             </div>
-          </div>
 
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

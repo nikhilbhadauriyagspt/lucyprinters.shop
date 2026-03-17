@@ -4,24 +4,19 @@ import { useCart } from '../context/CartContext';
 import API_BASE_URL from '../config';
 import { 
   Search, 
-  ShoppingBag, 
   User, 
   Heart, 
   ChevronDown, 
   X,
-  LogOut,
   ChevronRight,
   Loader2,
-  LayoutGrid,
   Menu, 
   Printer, 
-  ShieldCheck, 
-  ArrowRight,
   ShoppingCart,
-  Zap,
+  Mail,
   PackageCheck,
-  Phone,
-  Mail
+  ArrowRight,
+  LayoutGrid
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
@@ -35,45 +30,55 @@ export default function Header() {
   const [searchQuery, setSearchQuery] = useState('');
   const [suggestions, setSuggestions] = useState({ products: [], categories: [] });
   const [isSearching, setIsSearching] = useState(false);
+  const [selectedSearchCategory, setSelectedSearchCategory] = useState('All Categories');
   const navigate = useNavigate();
   const location = useLocation();
   const searchRef = useRef(null);
-  const categoryMenuRef = useRef(null);
 
   const cartTotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
 
-  // Suggestions Logic
+  const printerCategoriesForSearch = [
+    "Inkjet Printers",
+    "Laser Printers",
+    "All-in-One Printers",
+    "Thermal Printers",
+    "Dot Matrix Printers",
+    "LED Printers",
+    "Large Format Printers",
+    "Photo Printers",
+    "Supertank Printers",
+    "Printer Accessories"
+  ];
+
   useEffect(() => {
     const fetchSuggestions = async () => {
       if (searchQuery.trim().length > 0) {
         setIsSearching(true);
         try {
-          const pRes = await fetch(`${API_BASE_URL}/products?search=${encodeURIComponent(searchQuery)}&limit=8`);
+          const catParam = selectedSearchCategory !== 'All Categories' ? `&category=${selectedSearchCategory}` : '';
+          const pRes = await fetch(`${API_BASE_URL}/products?search=${encodeURIComponent(searchQuery)}${catParam}&limit=8`);
           const pData = await pRes.json();
           if (pData.status === 'success') {
             setSuggestions({ products: pData.data || [], categories: [] });
-          } else {
-            setSuggestions({ products: [], categories: [] });
           }
         } catch (err) { 
           console.error('Search Error:', err); 
-          setSuggestions({ products: [], categories: [] });
         } finally { 
           setIsSearching(false); 
         }
       } else {
         setSuggestions({ products: [], categories: [] });
-        setIsSearching(false);
       }
     };
     const timeoutId = setTimeout(fetchSuggestions, 300);
     return () => clearTimeout(timeoutId);
-  }, [searchQuery]);
+  }, [searchQuery, selectedSearchCategory]);
 
   const handleSearch = (e) => {
     if (e) e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}`);
+      const catParam = selectedSearchCategory !== 'All Categories' ? `&category=${selectedSearchCategory}` : '';
+      navigate(`/shop?search=${encodeURIComponent(searchQuery.trim())}${catParam}`);
       setSearchQuery('');
     }
   };
@@ -106,144 +111,209 @@ export default function Header() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 w-full z-[100] font-sans">
-        {/* --- SINGLE MODERN CRYSTAL LIGHT HEADER --- */}
-        <div className="bg-white/80 backdrop-blur-2xl border-b border-zinc-100 shadow-[0_4px_30px_rgba(0,0,0,0.03)]">
-          <div className="max-w-[1920px] mx-auto h-20 md:h-24 px-4 md:px-10 flex items-center justify-between gap-6 md:gap-10">
-            
-            {/* 1. Logo Section */}
-            <div className="flex items-center gap-8 shrink-0">
-              <Link to="/" className="transition-transform hover:scale-105 duration-300">
-                <img src="/logo/MYPRINTERMANNN.png" alt="DashPrinterShop" className="h-8 md:h-12 w-auto object-contain " />
-              </Link>
-              
-              {/* Desktop Main Nav */}
-              <nav className="hidden xl:flex items-center gap-1">
-                {navLinks.map((link) => (
-                  <Link 
-                    key={link.name} to={link.path} 
-                    className={cn(
-                      "px-4 py-2 text-[13px] font-bold uppercase tracking-wider text-zinc-500 hover:text-zinc-900 hover:bg-zinc-50 rounded-full transition-all",
-                      location.pathname === link.path && "text-[#0ea5e9] bg-[#0ea5e9]/5"
-                    )}
-                  >
-                    {link.name}
-                  </Link>
-                ))}
-              </nav>
+      <header className="fixed top-0 left-0 w-full z-[100] font-jakarta shadow-sm">
+        {/* 1. TOP BAR (Light Grey) */}
+        <div className="bg-[#f5f5f5] text-[#666] py-2 border-b border-gray-200">
+          <div className="w-full px-4 flex justify-between items-center text-[11px] font-semibold tracking-wide uppercase">
+            {/* Left: Info Email */}
+            <div className="flex items-center gap-1.5 hover:text-blue-600 transition-colors cursor-pointer">
+              <Mail size={12} className="text-blue-600" />
+              <span>info@lucyprinters.shop</span>
             </div>
 
-            {/* 2. Search Section (Integrated Departments & Search) */}
-            <div className="hidden lg:flex flex-1 max-w-3xl items-center gap-0 group" ref={searchRef}>
-              {/* Departments Dropdown Integrated */}
-              <div className="relative h-[48px]" onMouseEnter={() => setActiveDropdown('categories')} onMouseLeave={() => setActiveDropdown(null)}>
-                <button 
+            {/* Center: Welcome Message */}
+            <div className="hidden md:block ml-40 text-gray-400">
+              Welcome to Printer Store
+            </div>
+
+            {/* Right: Auth & Track */}
+            <div className="flex items-center gap-6">
+              <Link to="/orders" className="hover:text-blue-600 transition-colors flex items-center gap-1.5">
+                <PackageCheck size={12} className="text-blue-600" />
+                <span>Track Your Order</span>
+              </Link>
+              <Link to="/login" className="hover:text-blue-600 transition-colors">Register / Sign In</Link>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. MAIN HEADER (White) */}
+        <div className="bg-white border-b border-gray-100">
+          <div className="w-full h-20 px-4 flex items-center justify-between">
+            {/* Logo */}
+            <Link to="/" className="shrink-0 transition-transform hover:scale-105 ml-15  duration-300">
+              <img src="/logo/MYPRINTERMANNN.png" alt="LucyPrinters" className="h-8 md:h-12 w-auto object-contain" />
+            </Link>
+
+
+            {/* Center Navigation */}
+            <nav className="hidden lg:flex items-center ml-50 gap-10">
+              {navLinks.map((link) => (
+                <Link 
+                  key={link.name} to={link.path} 
                   className={cn(
-                    "h-full px-6 flex items-center gap-2 bg-zinc-100/50 hover:bg-zinc-100 text-zinc-600 text-[12px] font-bold uppercase tracking-wider rounded-l-2xl border-y border-l border-zinc-200 transition-all whitespace-nowrap",
-                    activeDropdown === 'categories' && "bg-white text-[#0ea5e9] border-[#0ea5e9]/20"
+                    "text-[13px] font-bold uppercase tracking-widest transition-all",
+                    location.pathname === link.path ? "text-blue-600" : "text-black hover:text-blue-600"
                   )}
                 >
-                  <LayoutGrid size={16} />
-                  Departments
-                  <ChevronDown size={14} className={cn("transition-transform duration-300", activeDropdown === 'categories' && "rotate-180")} />
-                </button>
+                  {link.name}
+                </Link>
+              ))}
+            </nav>
 
-                <AnimatePresence>
-                  {activeDropdown === 'categories' && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-[calc(100%+12px)] left-0 w-[850px] bg-white text-zinc-900 shadow-[0_30px_100px_rgba(0,0,0,0.1)] rounded-3xl border border-zinc-100 p-10 grid grid-cols-3 gap-10 z-[120]"
-                    >
-                      {categories.slice(0, 6).map(cat => (
-                        <div key={cat.id} className="space-y-5">
-                          <Link 
-                            to={`/shop?category=${cat.slug}`} 
-                            onClick={() => setActiveDropdown(null)} 
-                            className="text-[14px] font-black uppercase text-[#0ea5e9] hover:text-zinc-900 transition-colors block border-b border-zinc-50 pb-3"
-                          >
-                            {cat.name}
-                          </Link>
-                          <div className="flex flex-col gap-3">
-                            {cat.children?.map(sub => (
-                              <Link 
-                                key={sub.id} 
-                                to={`/shop?category=${sub.slug}`} 
-                                onClick={() => setActiveDropdown(null)} 
-                                className="text-[14px] font-medium text-zinc-400 hover:text-[#0ea5e9] flex items-center gap-2 transition-colors"
-                              >
-                                <ChevronRight size={10} /> {sub.name}
-                              </Link>
-                            ))}
-                          </div>
-                        </div>
-                      ))}
-                    </motion.div>
+            {/* Right: User Utilities (Account, Wishlist, Cart) */}
+            <div className="flex items-center mr-15 gap-8">
+              {/* Account */}
+              <Link to={user ? "/profile" : "/login"} className="flex items-center gap-3 group">
+                <div className="h-10 w-10 bg-gray-50 flex items-center justify-center rounded-full group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <User size={20} />
+                </div>
+                <div className="hidden sm:flex flex-col items-start">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase ">Account</span>
+                  <span className="text-[13px] font-bold group-hover:text-blue-600 transition-colors">{user ? "Profile" : "Sign In"}</span>
+                </div>
+              </Link>
+
+              {/* Wishlist */}
+              <Link to="/wishlist" className="flex items-center gap-3 group">
+                <div className="relative h-10 w-10 bg-gray-50 flex items-center justify-center rounded-full group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <Heart size={20} />
+                  {wishlistCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full border border-white">
+                      {wishlistCount}
+                    </span>
                   )}
-                </AnimatePresence>
-              </div>
+                </div>
+                <div className="hidden sm:flex flex-col items-start ">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase ">Saved</span>
+                  <span className="text-[13px] font-bold group-hover:text-blue-600 transition-colors">Wishlist</span>
+                </div>
+              </Link>
+              
+              {/* Cart */}
+              <button onClick={openCartDrawer} className="flex items-center gap-3 group">
+                <div className="relative h-10 w-10 bg-gray-50 flex items-center justify-center rounded-full group-hover:bg-blue-600 group-hover:text-white transition-all duration-300">
+                  <ShoppingCart size={20} />
+                  {cartCount > 0 && (
+                    <span className="absolute -top-1 -right-1 bg-blue-600 text-white text-[9px] font-bold h-4 w-4 flex items-center justify-center rounded-full border border-white">
+                      {cartCount}
+                    </span>
+                  )}
+                </div>
+                <div className="hidden sm:flex flex-col items-start">
+                  <span className="text-[10px] font-bold text-gray-400 uppercase ">Total</span>
+                  <span className="text-[13px] font-bold group-hover:text-blue-600 transition-colors">${cartTotal}</span>
+                </div>
+              </button>
 
-              <form 
-                onSubmit={handleSearch} 
-                className="flex-1 flex h-[48px] bg-zinc-100/50 hover:bg-zinc-100 focus-within:bg-white rounded-r-2xl relative border border-zinc-200 focus-within:border-[#0ea5e9]/30 transition-all shadow-inner"
-              >
+              <button onClick={() => setIsSidebarOpen(true)} className="lg:hidden text-black hover:text-blue-600">
+                <Menu size={24} />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. SEARCH + CATEGORY BAR (Blue) */}
+        <div className="bg-blue-500">
+          <div className="w-full px-4 flex items-center h-14">
+            {/* Categories Button - Conditional */}
+            <div className="relative h-full shrink-0">
+              {location.pathname === '/' ? (
+                <button className="h-full w-[280px] bg-blue-700 text-white flex items-center justify-center gap-3 text-[12px] font-black uppercase tracking-widest hover:bg-black transition-all">
+                  <Menu size={18} />
+                  CATEGORIES
+                </button>
+              ) : (
+                <Link 
+                  to="/shop" 
+                  className="h-full w-[280px] bg-blue-700 text-white flex items-center justify-center gap-3 text-[12px] font-black uppercase tracking-widest hover:bg-blue-800 transition-all border-r border-blue-500/20"
+                >
+                  <LayoutGrid size={18} />
+                  Explore Collection
+                </Link>
+              )}
+            </div>
+
+            {/* Large Search Bar - Centered */}
+            <div className="flex-1 flex ml-60 px-4">
+              <form onSubmit={handleSearch} className="w-full max-w-4xl flex h-11 bg-white rounded-sm relative shadow-inner" ref={searchRef}>
+                {/* Search Category Dropdown */}
+                <div className="relative group border-r border-gray-100 h-full hidden md:block shrink-0">
+                  <select 
+                    value={selectedSearchCategory}
+                    onChange={(e) => setSelectedSearchCategory(e.target.value)}
+                    className="h-full px-6 bg-white text-[11px] font-bold text-gray-500 uppercase tracking-widest outline-none cursor-pointer hover:bg-gray-100 transition-all appearance-none pr-10"
+                  >
+                    <option>All Categories</option>
+                    {printerCategoriesForSearch.map(catName => (
+                      <option key={catName} value={catName.toLowerCase().replace(/ /g, '-')}>{catName}</option>
+                    ))}
+                  </select>
+                  <ChevronDown size={10} className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400" />
+                </div>
+
                 <input 
                   type="text" 
-                  placeholder="Search for printers and more..."
+                  placeholder="Search for products..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoComplete="off"
-                  className="flex-1 px-6 text-[14px] font-medium text-zinc-900 bg-transparent focus:outline-none placeholder:text-zinc-400"
+                  className="flex-1 px-6 text-[14px] font-medium text-black outline-none placeholder:text-gray-300"
                 />
 
-                <button type="submit" className="pr-5 flex items-center text-zinc-300 hover:text-[#0ea5e9] transition-colors">
+                <button type="submit" className="px-8 bg-blue-700 text-white hover:bg-blue-800 transition-all flex items-center gap-2 text-[12px] font-black uppercase tracking-widest">
                   <Search size={18} />
                 </button>
 
-                {/* Suggestions Overlay */}
+                {/* Suggestions Overlay - Larger and Centered */}
                 <AnimatePresence>
-                  {searchQuery.trim().length > 0 && (isSearching || (suggestions.products && suggestions.products.length >= 0)) && (
+                  {searchQuery.trim().length > 0 && (isSearching || (suggestions.products && suggestions.products.length > 0)) && (
                     <motion.div 
                       initial={{ opacity: 0, y: 10 }} 
                       animate={{ opacity: 1, y: 0 }} 
                       exit={{ opacity: 0, y: 10 }} 
-                      className="absolute top-[calc(100%+12px)] left-0 right-0 bg-white shadow-[0_30px_100px_rgba(0,0,0,0.1)] rounded-3xl border border-zinc-100 overflow-hidden z-[200]"
+                      className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white shadow-[0_30px_100px_rgba(0,0,0,0.25)] rounded-sm border border-gray-200 overflow-hidden z-[250]"
                     >
-                      <div className="p-4">
+                      <div className="p-3">
                         {isSearching ? (
-                          <div className="p-14 text-center">
-                            <Loader2 size={24} className="animate-spin mx-auto text-[#0ea5e9] mb-3" />
-                            <p className="text-[11px] font-bold uppercase text-zinc-400 tracking-[0.2em]">Searching Inventory</p>
+                          <div className="p-12 text-center">
+                            <Loader2 size={30} className="animate-spin mx-auto text-blue-600 mb-3" />
+                            <p className="text-[11px] font-bold uppercase text-gray-400 tracking-widest">Searching Premium Inventory...</p>
                           </div>
                         ) : suggestions.products && suggestions.products.length > 0 ? (
-                          <div className="max-h-[500px] overflow-y-auto custom-scrollbar space-y-2">
+                          <div className="max-h-[550px] overflow-y-auto custom-scrollbar space-y-1">
                             {suggestions.products.map(p => {
-                              const firstImage = p.images ? (typeof p.images === 'string' ? JSON.parse(p.images)[0] : p.images[0]) : '';
-                              const imageSrc = firstImage && !firstImage.startsWith('/') && !firstImage.startsWith('http') ? `/${firstImage}` : firstImage;
+                              const rawImg = p.images ? (typeof p.images === 'string' ? JSON.parse(p.images)[0] : p.images[0]) : '';
+                              const imageSrc = rawImg && !rawImg.startsWith('http') && !rawImg.startsWith('/') ? `/${rawImg}` : rawImg;
+                              
                               return (
                                 <Link 
                                   key={p.id} 
                                   to={`/product/${p.slug}`} 
                                   onClick={() => setSearchQuery('')} 
-                                  className="flex items-center gap-5 p-4 hover:bg-zinc-50 group rounded-2xl transition-all"
+                                  className="flex items-center gap-6 p-4 hover:bg-gray-50 transition-all group rounded-sm border border-transparent hover:border-gray-100"
                                 >
-                                  <div className="h-16 w-16 bg-white p-2 flex items-center justify-center border border-zinc-100 group-hover:bg-white rounded-xl transition-all">
+                                  <div className="h-20 w-20 bg-white border border-gray-100 p-2 flex items-center justify-center rounded-sm shrink-0 shadow-sm group-hover:shadow-md transition-all">
                                     <img src={imageSrc} className="max-h-full max-w-full object-contain" alt="" />
                                   </div>
-                                  <div className="flex-1 min-w-0">
-                                    <p className="text-[14px] font-bold text-zinc-900 truncate group-hover:text-[#0ea5e9] transition-colors">{p.name}</p>
-                                    <p className="text-[13px] font-black text-[#0ea5e9]">${p.price}</p>
+                                  <div className="flex-1 min-w-0 text-left">
+                                    <p className="text-[15px] font-bold text-black truncate group-hover:text-blue-600 transition-colors">{p.name}</p>
+                                    <div className="flex items-center gap-3 mt-1">
+                                      <p className="text-[14px] font-black text-blue-600">${p.price}</p>
+                                      {p.old_price && <p className="text-[12px] text-gray-400 line-through">${p.old_price}</p>}
+                                    </div>
                                   </div>
-                                  <div className="h-10 w-10 rounded-full bg-zinc-100 flex items-center justify-center text-zinc-400 group-hover:bg-[#0ea5e9] group-hover:text-white transition-all">
-                                    <ArrowRight size={16} />
+                                  <div className="h-10 w-10 flex items-center justify-center rounded-full bg-gray-50 group-hover:bg-blue-600 group-hover:text-white transition-all">
+                                    <ArrowRight size={18} />
                                   </div>
                                 </Link>
                               );
                             })}
                           </div>
                         ) : (
-                          <div className="p-14 text-center text-zinc-300">
-                            <Search size={40} className="mx-auto mb-4 opacity-20" />
-                            <p className="text-[13px] font-bold uppercase tracking-widest text-zinc-400">No results found</p>
+                          <div className="p-12 text-center">
+                            <Search size={40} className="mx-auto text-gray-200 mb-4" />
+                            <p className="text-gray-400 font-bold text-[12px] uppercase tracking-widest">No matching products found</p>
                           </div>
                         )}
                       </div>
@@ -252,85 +322,30 @@ export default function Header() {
                 </AnimatePresence>
               </form>
             </div>
-
-            {/* 3. Actions Section */}
-            <div className="flex items-center gap-2 md:gap-4">
-              
-              {/* User Account */}
-              <Link 
-                to={user ? "/profile" : "/login"} 
-                className="hidden md:flex h-12 w-12 items-center justify-center text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-2xl transition-all border border-zinc-100"
-                title="Account"
-              >
-                <User size={20} />
-              </Link>
-
-              {/* Wishlist */}
-              <Link 
-                to="/wishlist" 
-                className="hidden md:flex h-12 w-12 items-center justify-center text-zinc-400 hover:text-zinc-900 hover:bg-zinc-100 rounded-2xl transition-all relative border border-zinc-100"
-                title="Wishlist"
-              >
-                <Heart size={20} />
-                {wishlistCount > 0 && <span className="absolute top-3 right-3 h-2 w-2 bg-[#0ea5e9] rounded-full shadow-[0_0_10px_#0ea5e9]" />}
-              </Link>
-
-              {/* Cart Button (Accent) */}
-              <button 
-                onClick={openCartDrawer}
-                className="flex items-center gap-3 bg-[#0ea5e9] hover:bg-[#0284c7] text-white px-5 md:px-7 h-12 rounded-2xl transition-all group shadow-[0_2px_5px_rgba(14,165,233,0.2)]"
-              >
-                <div className="relative">
-                  <ShoppingCart size={20} strokeWidth={2.5} />
-                  {cartCount > 0 && (
-                    <span className="absolute -top-3 -right-4 bg-zinc-900 text-white text-[10px] font-black h-5 w-5 flex items-center justify-center rounded-full border-2 border-white">
-                      {cartCount}
-                    </span>
-                  )}
-                </div>
-                <span className="text-[15px] font-black tracking-tight hidden sm:block">${cartTotal}</span>
-              </button>
-
-              {/* Mobile Menu Toggle */}
-              <button 
-                onClick={() => setIsSidebarOpen(true)} 
-                className="lg:hidden h-12 w-12 flex items-center justify-center text-zinc-500 bg-zinc-100 rounded-2xl hover:bg-zinc-200 transition-all border border-zinc-200"
-              >
-                <Menu size={24} />
-              </button>
-            </div>
           </div>
         </div>
       </header>
 
       {/* Dynamic Spacer */}
-      <div className="h-16 md:h-20"></div>
+      <div className="h-[188px]"></div>
 
       {/* --- MOBILE SIDEBAR --- */}
       <AnimatePresence>
         {isSidebarOpen && (
           <>
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsSidebarOpen(false)} className="fixed inset-0 z-[200] bg-black/60 backdrop-blur-sm" />
-            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed top-0 left-0 h-full w-[320px] bg-white z-[210] flex flex-col shadow-2xl border-r-4 border-[#003b95]">
-              <div className="p-6 bg-[#003b95] flex justify-between items-center text-white">
-                <span className="text-xl font-black italic">MENU</span>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsSidebarOpen(false)} className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm" />
+            <motion.div initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} className="fixed top-0 left-0 h-full w-[320px] bg-white z-[210] flex flex-col shadow-2xl">
+              <div className="p-6 bg-blue-600 flex justify-between items-center text-white">
+                <span className="text-xl font-bold italic uppercase tracking-tighter">Menu</span>
                 <button onClick={() => setIsSidebarOpen(false)} className="h-10 w-10 flex items-center justify-center bg-white/10 rounded-md"><X size={24} /></button>
               </div>
               <div className="flex-1 overflow-y-auto p-6 space-y-8 custom-scrollbar">
                 <div className="space-y-4">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Navigation</p>
                   {navLinks.map(link => (
-                    <Link key={link.name} to={link.path} onClick={() => setIsSidebarOpen(false)} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg text-[12px] font-black uppercase text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-all border border-gray-100">
+                    <Link key={link.name} to={link.path} onClick={() => setIsSidebarOpen(false)} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg text-[12px] font-bold uppercase text-black hover:bg-blue-50 hover:text-blue-600 transition-all">
                       {link.name} <ChevronRight size={16} />
                     </Link>
                   ))}
-                </div>
-                <div className="space-y-4">
-                  <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">User Tools</p>
-                  <div className="grid grid-cols-2 gap-3">
-                    <Link to="/profile" onClick={() => setIsSidebarOpen(false)} className="flex flex-col items-center p-4 bg-gray-50 rounded-lg border border-gray-100"><User size={20} className="mb-2 text-blue-600" /><span className="text-[10px] font-black uppercase">Account</span></Link>
-                    <Link to="/wishlist" onClick={() => setIsSidebarOpen(false)} className="flex flex-col items-center p-4 bg-gray-50 rounded-lg border border-gray-100"><Heart size={20} className="mb-2 text-red-500" /><span className="text-[10px] font-black uppercase">Wishlist</span></Link>
-                  </div>
                 </div>
               </div>
             </motion.div>

@@ -1,67 +1,79 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+
+// Import higher quality banners from assets
+import banner1 from '@/assets/bannerr/banner1.jpg';
+import banner2 from '@/assets/bannerr/banner2.jpg';
+import banner5 from '@/assets/bannerr/banner5.jpg';
 
 const TripleBanners = () => {
   const banners = [
     {
-      title: "Inkjet",
+      title: "Enterprise",
       highlight: "Solutions",
-      description: "Vibrant colors and precision for every home office project.",
-      image: "/category/inkjet-printers.jpg",
-      link: "/shop?category=inkjet-printers",
-      color: "#0ea5e9"
-    },
-    {
-      title: "Laser",
-      highlight: "Performance",
-      description: "High-speed, professional-grade printing for business demands.",
-      image: "/category/laser-printers.jpg",
+      description: "High-volume laser printing designed for large-scale professional workspaces.",
+      image: banner1,
       link: "/shop?category=laser-printers",
-      color: "#000000"
+      accent: "blue"
     },
     {
-      title: "All-in-One",
-      highlight: "Mastery",
-      description: "Print, scan, and copy with absolute seamless efficiency.",
-      image: "/category/all-in-one-printers.jpg",
-      link: "/shop?category=all-in-one-printers",
-      color: "#0ea5e9"
+      title: "Next-Gen",
+      highlight: "Precision",
+      description: "Experience vibrant color accuracy with our premium inkjet collection.",
+      image: banner5,
+      link: "/shop?category=inkjet-printers",
+      accent: "black"
+    },
+    {
+      title: "Pro Ink",
+      highlight: "& Toner",
+      description: "Genuine supplies to keep your machines running at peak performance.",
+      image: banner2,
+      link: "/shop?category=printer-accessories",
+      accent: "blue"
     }
   ];
 
   return (
-    <section className="bg-white py-10 px-4 md:px-10">
-      <div className="max-w-[1920px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <section className="bg-white py-10 px-4 w-full font-jakarta">
+      <div className="w-full">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {banners.map((banner, index) => (
             <div 
               key={index} 
-              className="relative h-[300px] md:h-[350px] overflow-hidden group border border-zinc-100 shadow-sm"
+              className="relative h-[240px] md:h-[260px] overflow-hidden group rounded-sm border border-gray-100"
             >
               {/* Background Image */}
               <img 
                 src={banner.image} 
                 alt={banner.title} 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
               
               {/* Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent flex flex-col justify-end p-8">
-                <div className="space-y-3 relative z-10">
-                  <h3 className="text-2xl font-bold text-white leading-none italic">
-                    {banner.title} <br /> 
-                    <span style={{ color: banner.color }}>{banner.highlight}</span>
-                  </h3>
-                  <p className="text-white/70 text-[11px] font-medium leading-relaxed max-w-[200px]">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex flex-col justify-end p-6">
+                <div className="space-y-2 relative z-10">
+                  <div className="space-y-0.5">
+                    <span className={`inline-block px-2 py-0.5 rounded-sm text-[10px] font-bold ${banner.accent === 'blue' ? 'bg-blue-600 text-white' : 'bg-white text-black'}`}>
+                      {banner.accent === 'blue' ? 'Featured' : 'Exclusive'}
+                    </span>
+                    <h3 className="text-2xl font-black text-white leading-tight">
+                      {banner.title} <span className="text-blue-400">{banner.highlight}</span>
+                    </h3>
+                  </div>
+                  
+                  <p className="text-gray-200 text-[12px] font-medium leading-tight max-w-[260px]">
                     {banner.description}
                   </p>
-                  <div className="pt-2">
+                  
+                  <div className="pt-1">
                     <Link 
                       to={banner.link} 
-                      className="inline-flex items-center gap-2 bg-white hover:bg-[#0ea5e9] text-zinc-900 hover:text-white px-5 py-2.5 text-[10px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-lg"
+                      className="inline-flex items-center gap-2 text-white text-[12px] font-bold hover:text-blue-400 transition-colors"
                     >
-                      Explore <ArrowRight size={14} />
+                      Shop Now <ArrowRight size={14} />
                     </Link>
                   </div>
                 </div>

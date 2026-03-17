@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { Heart, Check, ArrowRight } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Heart, Check, ArrowRight, Eye, ShoppingCart } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useState } from "react";
@@ -26,30 +26,30 @@ export default function ProductGrid({ products = [] }) {
   };
 
   return (
-    <section className="bg-white py-24 px-4 md:px-10 overflow-hidden font-sans">
-      <div className="max-w-[1920px] mx-auto">
+    <section className="bg-white py-16 w-full overflow-hidden font-jakarta border-t border-gray-100">
+      <div className="w-full">
         
-        {/* --- SECTION HEADER --- */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b border-zinc-100 pb-10">
-          <div className="space-y-4">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-100 border border-zinc-200">
-               <span className="text-[10px] font-bold text-zinc-500 uppercase tracking-widest">Fresh Inventory</span>
+        {/* --- BADGE-STYLE SECTION HEADER --- */}
+        <div className="flex items-center justify-between mb-12">
+          <div className="relative flex items-center h-14">
+            <div className="bg-blue-600 h-full w-[340px] absolute left-0 rounded-r-full" />
+            <div className="relative z-10 pl-4 md:pl-10">
+              <h2 className="text-xl md:text-2xl font-black text-white uppercase tracking-wider">
+                New <span className="text-yellow-400 font-black">Arrivals</span>
+              </h2>
             </div>
-            <h2 className="text-3xl md:text-5xl font-bold text-zinc-900 leading-none italic tracking-tighter">
-              New <span className="text-[#0ea5e9]">Arrivals</span>
-            </h2>
           </div>
           
           <Link 
             to="/shop" 
-            className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-zinc-400 hover:text-zinc-900 transition-colors"
+            className="group flex items-center gap-3 text-[11px] font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-colors pr-4 md:pr-10"
           >
-            Explore Complete Catalog <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+            Explore All <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
 
         {/* --- PRODUCT GRID --- */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+        <div className="px-4 md:px-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-6">
           {products.slice(0, 30).map((p, idx) => (
             <motion.div 
               key={p.id}
@@ -57,75 +57,76 @@ export default function ProductGrid({ products = [] }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: (idx % 6) * 0.05 }}
-              className={cn(
-                "bg-white border border-zinc-200 transition-all duration-500 relative flex flex-col h-full group/card",
-                "hover:border-[#0ea5e9]/30 hover:shadow-[0_20px_40px_rgba(0,0,0,0.04)]"
-              )}
+              className="group relative flex flex-col h-full bg-white transition-all duration-500 border border-gray-100 rounded-sm"
             >
-              {/* Image Area */}
-              <div className="aspect-square w-full overflow-hidden bg-white flex items-center justify-center p-8 relative">
+              {/* Image Area with Hover Eye */}
+              <div className="relative aspect-square w-full bg-[#f9fafb] flex items-center justify-center p-6 overflow-hidden transition-all duration-500 border-b border-gray-50">
                 <img 
                   src={getImagePath(p.images)} 
                   alt={p.name} 
-                  className="max-h-full max-w-full object-contain mix-blend-multiply transition-transform duration-700 group-hover/card:scale-110 relative z-10"
+                  className="max-h-[85%] max-w-[85%] object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
                 />
+                
+                {/* Hover Overlay Buttons */}
+                <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center gap-3">
+                  <Link 
+                    to={`/product/${p.slug}`}
+                    className="h-12 w-12 bg-white text-black hover:bg-blue-600 hover:text-white flex items-center justify-center rounded-full shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75"
+                    title="View Details"
+                  >
+                    <Eye size={22} />
+                  </Link>
+                </div>
               </div>
 
-              {/* Info Area */}
-              <div className="p-6 bg-white border-t border-zinc-50 flex flex-col flex-1 relative">
-                <div className="space-y-2 mb-6 flex-1">
-                  <Link to={`/product/${p.slug}`}>
-                    <h3 className="text-[13px] font-bold text-zinc-800 line-clamp-1 group-hover/card:text-[#0ea5e9] transition-colors duration-300">
-                      {p.name}
-                    </h3>
-                  </Link>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-base font-black text-zinc-900">${p.price}</span>
-                  </div>
-                </div>
+              {/* Info Area - Left Aligned */}
+              <div className="p-4 flex flex-col flex-1 text-left relative">
+                <Link to={`/product/${p.slug}`}>
+                  <h3 className="text-[13px] font-bold text-gray-800 line-clamp-1 group-hover:text-blue-600 transition-colors mb-1">
+                    {p.name}
+                  </h3>
+                </Link>
+                <p className="text-sm font-black text-blue-600">${p.price}</p>
 
-                {/* Action Buttons */}
-                <div className="flex items-center gap-2 relative z-20 mt-auto">
+                {/* Sliding Hover Actions (The "Extra Card" part) */}
+                <div className="absolute top-full left-[-1px] right-[-1px] bg-white border-x border-b border-gray-100 shadow-xl opacity-0 group-hover:opacity-100 translate-y-[-10px] group-hover:translate-y-0 transition-all duration-500 z-30 p-4 space-y-3 rounded-b-sm">
                   <button 
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleAddToCart(p); }}
+                    onClick={() => handleAddToCart(p)}
                     disabled={addedItems[p.id]}
                     className={cn(
-                      "flex-1 h-10 rounded-xl text-[10px] font-bold uppercase tracking-wider transition-all duration-300 active:scale-95 flex items-center justify-center gap-2",
+                      "w-full h-10 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2 shadow-sm",
                       addedItems[p.id] 
-                        ? "bg-emerald-500 text-white shadow-md" 
-                        : "bg-zinc-900 text-white hover:bg-[#0ea5e9] shadow-sm hover:shadow-md"
+                        ? "bg-green-600 text-white" 
+                        : "bg-blue-600 text-white hover:bg-black active:scale-95"
                     )}
                   >
-                    {addedItems[p.id] ? <Check size={14} /> : "Add to Cart"}
+                    {addedItems[p.id] ? <Check size={14} /> : <ShoppingCart size={14} />}
+                    {addedItems[p.id] ? "Added" : "Add To Cart"}
                   </button>
                   
                   <button 
-                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
+                    onClick={() => toggleWishlist(p)}
                     className={cn(
-                      "h-10 w-10 rounded-xl border flex items-center justify-center transition-all duration-300 active:scale-95 shadow-sm",
+                      "w-full h-10 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all border flex items-center justify-center gap-2",
                       isInWishlist(p.id) 
                         ? "bg-red-50 border-red-100 text-red-500" 
-                        : "bg-white border-zinc-200 text-zinc-400 hover:text-red-500 hover:border-red-100"
+                        : "bg-gray-50 border-gray-100 text-gray-400 hover:text-red-500"
                     )}
                   >
-                    <Heart size={16} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
+                    <Heart size={14} fill={isInWishlist(p.id) ? "currentColor" : "none"} />
+                    Wishlist
                   </button>
                 </div>
-
-                {/* Simple Bottom Accent Line on Hover */}
-                <div className="absolute bottom-0 left-0 w-0 h-1 bg-[#0ea5e9] transition-all duration-500 group-hover/card:w-full" />
               </div>
-              
-              <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-[70%] z-0" />
             </motion.div>
           ))}
         </div>
 
         {/* --- VIEW ALL FOOTER --- */}
-        <div className="mt-20 pt-10 border-t border-zinc-100 text-center">
+        <div className="mt-20 pt-10 text-center">
             <Link 
               to="/shop" 
-              className="inline-flex items-center gap-4 bg-zinc-900 hover:bg-[#0ea5e9] text-white px-12 py-5 text-[11px] font-black uppercase tracking-[0.2em] transition-all active:scale-95 shadow-2xl"
+              className="inline-flex items-center gap-4 bg-black hover:bg-blue-600 text-white px-14 py-5 text-[12px] font-black uppercase tracking-widest transition-all active:scale-95 shadow-2xl"
             >
               Browse All Products <ArrowRight size={18} />
             </Link>

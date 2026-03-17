@@ -1,124 +1,161 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
 import { Link } from 'react-router-dom';
-import { Heart, Trash2, ChevronLeft, ArrowRight, ShoppingCart } from 'lucide-react';
+import { Heart, Trash2, ChevronLeft, ArrowRight, ShoppingCart, Eye, Check, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import SEO from '@/components/SEO';
 import { cn } from '../lib/utils';
+import { useState } from 'react';
 
 export default function Wishlist() {
-  const { wishlist, toggleWishlist, addToCart, wishlistCount } = useCart();
+  const { wishlist, toggleWishlist, addToCart, wishlistCount, isInWishlist } = useCart();
+  const [addedItems, setAddedItems] = useState({});
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    setAddedItems(prev => ({ ...prev, [product.id]: true }));
+    setTimeout(() => {
+      setAddedItems(prev => ({ ...prev, [product.id]: false }));
+    }, 2000);
+  };
 
   const getImagePath = (images) => {
     try {
       const imgs = typeof images === 'string' ? JSON.parse(images) : images;
       if (Array.isArray(imgs) && imgs.length > 0) return `/${imgs[0]}`;
     } catch (e) { }
-    return "https://via.placeholder.com/400x400?text=No+Image";
+    return "https://via.placeholder.com/400x400?text=Product";
   };
 
   if (wishlistCount === 0) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-5 px-6 font-sans bg-white text-zinc-900">
-        <SEO title="Empty Wishlist | DashPrinterShop" />
-        <div className="h-24 w-24 bg-zinc-50 rounded-[2.5rem] border border-zinc-100 flex items-center justify-center mb-10 relative overflow-hidden group">
-          <Heart size={40} className="text-zinc-200" strokeWidth={1.5} />
+      <div className="min-h-screen flex flex-col items-center justify-center pt-20 px-6 font-jakarta bg-white text-gray-900">
+        <SEO title="Empty Wishlist | LucyPrinters" />
+        <div className="h-24 w-24 bg-gray-50 rounded-full border border-gray-100 flex items-center justify-center mb-8">
+          <Heart size={40} className="text-gray-200" strokeWidth={1.5} />
         </div>
-        <h2 className="text-3xl md:text-4xl font-bold uppercase italic tracking-tighter mb-4 text-center">No Saved Items.</h2>
-        <p className="text-zinc-400 text-lg font-medium mb-12 text-center max-w-sm">You haven't saved any printers to your wishlist yet.</p>
-        <Link to="/shop" className="h-16 px-12 bg-zinc-900 text-white rounded-2xl flex items-center gap-4 text-[13px] font-bold uppercase tracking-widest hover:bg-[#0ea5e9] transition-all shadow-xl group">
-          Browse Shop <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+        <h2 className="text-3xl font-black uppercase tracking-tight mb-4 text-center">Your wishlist is <span className="text-blue-600">empty</span></h2>
+        <p className="text-gray-500 font-medium mb-10 text-center max-w-sm">Save your favorite printers here to easily find them later.</p>
+        <Link to="/shop" className="h-14 px-12 bg-black text-white rounded-sm flex items-center gap-4 text-[12px] font-black uppercase tracking-widest hover:bg-blue-600 transition-all shadow-xl active:scale-95 group">
+          Start Shopping <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-white pt-32 pb-24 font-sans text-zinc-900 overflow-x-hidden">
-      <SEO title="My Wishlist | DashPrinterShop" description="Review your saved printers." />
+    <div className="min-h-screen bg-white font-jakarta text-gray-900 overflow-x-hidden">
+      <SEO title="My Wishlist | LucyPrinters" description="Review your saved printers." />
       
-      <div className="max-w-[1400px] mx-auto px-6 md:px-10">
-        
-        {/* --- HEADER --- */}
-        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16 border-b border-zinc-100 pb-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-3">
-               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-[#0ea5e9]">Your Wishlist</span>
-            </div>
-            <h1 className="text-4xl md:text-6xl font-bold text-zinc-900 uppercase italic tracking-tighter leading-[0.9]">
-              Saved <br />
-              <span className="text-[#0ea5e9]">Selection.</span>
-            </h1>
-          </div>
-          <div className="flex items-center gap-6">
-             <div className="text-right">
-                <span className="text-[10px] font-black text-zinc-400 uppercase tracking-widest mb-1 block">Saved Items</span>
-                <span className="text-3xl font-bold text-[#0ea5e9] italic leading-none">{wishlistCount}</span>
-             </div>
-          </div>
+      {/* --- HERO HEADER --- */}
+      <section className="pt-16 pb-12 px-4 md:px-10 bg-gray-50 border-b border-gray-100">
+        <div className="max-w-[1600px] mx-auto text-center space-y-4">
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-blue-600 text-xs font-black uppercase tracking-[0.3em] block"
+          >
+            Personal Collection
+          </motion.span>
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-3xl md:text-5xl font-black text-black uppercase tracking-tight"
+          >
+            My <span className="text-blue-600">Wishlist</span>
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-500 text-sm md:text-base font-medium max-w-2xl mx-auto leading-relaxed"
+          >
+            Review your carefully selected printers. Ready to upgrade your office setup?
+          </motion.p>
         </div>
+      </section>
 
+      <div className="max-w-[1600px] mx-auto px-4 md:px-10 py-20">
+        
         {/* --- GRID --- */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-8">
           <AnimatePresence mode="popLayout">
-            {wishlist.map((p) => (
+            {wishlist.map((p, idx) => (
               <motion.div 
                 key={p.id}
                 layout
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="relative bg-white border border-zinc-100 p-5 transition-all duration-500 flex flex-col group hover:shadow-[0_30px_60px_rgba(0,0,0,0.06)] hover:-translate-y-2 hover:border-[#0ea5e9]/20 rounded-[2.5rem] h-[450px]"
+                transition={{ delay: (idx % 5) * 0.05 }}
+                className="group relative flex flex-col h-full bg-white transition-all duration-500 border border-gray-100 rounded-sm"
               >
-                {/* Remove Button */}
-                <button 
-                  onClick={(e) => { e.preventDefault(); toggleWishlist(p); }}
-                  className="absolute top-6 right-6 z-30 h-10 w-10 bg-white border border-zinc-100 rounded-xl flex items-center justify-center transition-all hover:bg-red-50 hover:text-red-500 hover:border-red-100 active:scale-90 text-zinc-300 shadow-sm"
-                >
-                  <Trash2 size={18} />
-                </button>
+                {/* Image Area with Hover Eye */}
+                <div className="relative aspect-square w-full bg-[#f9fafb] flex items-center justify-center p-6 overflow-hidden transition-all duration-500 border-b border-gray-50">
+                  <img 
+                    src={getImagePath(p.images)} 
+                    alt={p.name} 
+                    className="max-h-[85%] max-w-[85%] object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110"
+                  />
 
-                {/* Image Panel */}
-                <div className="relative aspect-square w-full flex items-center justify-center mb-6 px-4 overflow-hidden bg-zinc-50 rounded-2xl group-hover:bg-white transition-colors">
-                  <img src={getImagePath(p.images)} alt={p.name} className="max-w-[70%] max-h-[70%] object-contain mix-blend-multiply transition-transform duration-700 group-hover:scale-110" />
+                  {/* Remove Button (Permanent in Wishlist) */}
+                  <button 
+                    onClick={(e) => { e.preventDefault(); e.stopPropagation(); toggleWishlist(p); }}
+                    className="absolute top-3 right-3 h-9 w-9 rounded-full flex items-center justify-center transition-all duration-300 shadow-sm z-20 border border-red-100 bg-white text-red-500 hover:bg-red-500 hover:text-white"
+                    title="Remove from Wishlist"
+                  >
+                    <X size={18} />
+                  </button>
+                  
+                  {/* Hover Overlay Eye */}
+                  <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex items-center justify-center">
+                    <Link 
+                      to={`/product/${p.slug}`}
+                      className="h-12 w-12 bg-white text-black hover:bg-blue-600 hover:text-white flex items-center justify-center rounded-full shadow-xl translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-75"
+                    >
+                      <Eye size={22} />
+                    </Link>
+                  </div>
                 </div>
 
-                {/* Metadata Panel */}
-                <div className="space-y-4 px-2">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-[10px] font-black text-[#0ea5e9] uppercase tracking-widest">{p.brand_name || 'Premium Brand'}</span>
-                    <Link to={`/product/${p.slug}`} className="block">
-                      <h3 className="font-bold text-zinc-800 text-[15px] leading-tight line-clamp-2 uppercase tracking-tight group-hover:text-[#0ea5e9] transition-colors h-[40px]">
+                {/* Info Area - Left Aligned */}
+                <div className="p-4 flex flex-col flex-1 text-left relative">
+                  <div className="mb-auto">
+                    <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block mb-1">{p.brand_name || 'Premium'}</span>
+                    <Link to={`/product/${p.slug}`}>
+                      <h3 className="text-[13px] font-bold text-gray-800 line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
                         {p.name}
                       </h3>
                     </Link>
                   </div>
-                  <div className="flex items-center justify-between">
-                     <span className="text-[20px] font-black text-zinc-900 italic tracking-tighter">${p.price.toLocaleString()}</span>
+                  <p className="text-[16px] font-black text-blue-600 mt-3">${p.price}</p>
+
+                  {/* Sliding Hover Actions */}
+                  <div className="absolute top-full left-[-1px] right-[-1px] bg-white border-x border-b border-gray-100 shadow-xl opacity-0 group-hover:opacity-100 translate-y-[-10px] group-hover:translate-y-0 transition-all duration-500 z-30 p-4 rounded-b-sm">
+                    <button 
+                      onClick={() => handleAddToCart(p)}
+                      disabled={addedItems[p.id]}
+                      className={cn(
+                        "w-full h-10 rounded-sm text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-center gap-2",
+                        addedItems[p.id] ? "bg-green-600 text-white" : "bg-blue-600 text-white hover:bg-black"
+                      )}
+                    >
+                      {addedItems[p.id] ? <Check size={14} /> : <ShoppingCart size={14} />}
+                      {addedItems[p.id] ? "Added" : "Add To Cart"}
+                    </button>
                   </div>
                 </div>
-
-                {/* Action Area */}
-                <div className="mt-auto pt-4 relative z-30">
-                  <button 
-                    onClick={() => addToCart(p)}
-                    className="w-full h-12 bg-zinc-900 text-white rounded-xl text-[12px] font-bold uppercase tracking-widest hover:bg-[#0ea5e9] transition-all active:scale-95 shadow-lg shadow-zinc-200"
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-
-                <Link to={`/product/${p.slug}`} className="absolute top-0 left-0 w-full h-[80%] z-0" />
               </motion.div>
             ))}
           </AnimatePresence>
         </div>
 
         {/* --- FOOTER ACTION --- */}
-        <div className="mt-20 pt-10 border-t border-zinc-100">
-          <Link to="/shop" className="group inline-flex items-center gap-3 text-[13px] font-bold uppercase tracking-widest text-[#0ea5e9] hover:text-zinc-900 transition-all">
+        <div className="mt-24 pt-10 border-t border-gray-100 flex justify-center">
+          <Link to="/shop" className="group inline-flex items-center gap-3 text-[12px] font-black uppercase tracking-widest text-gray-400 hover:text-blue-600 transition-all">
             <ChevronLeft size={18} className="group-hover:-translate-x-1 transition-transform" />
-            Back to Shop
+            Return to Shop
           </Link>
         </div>
       </div>

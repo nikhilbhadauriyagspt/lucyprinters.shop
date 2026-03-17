@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dashprintershop.shop/sitemap.xml
+Sitemap: https://lucyprinters.shop/sitemap.xml
